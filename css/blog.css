@@ -1,8 +1,8 @@
 /*Portada*/
 
 .blog-container-cover{
-    width: 150%;
-    height: 600px;
+    width: 90%;
+    height: 400px;
     position: relative;
     margin-top: 80px;
     background-image: url(../Img/img.1.2.png);
