@@ -165,7 +165,7 @@ input[type="radio"]{
 }
 
 [value="TODOS"]:checked ~ .posts .post:not([data-category~="TODOS"]),
-[value="Utilidad"]:checked ~ .posts .post:not([data-category~="Utilidad"]),
+[value="Facturas"]:checked ~ .posts .post:not([data-category~="Facturas"]),
 [value="Pereza"]:checked ~ .posts .post:not([data-category~="Pereza"]),
 [value="IA"]:checked ~ .posts .post:not([data-category~="IA"]){
     display: none;
