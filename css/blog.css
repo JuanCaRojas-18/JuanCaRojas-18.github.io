@@ -166,15 +166,15 @@ input[type="radio"]{
 
 [value="TODOS"]:checked ~ .posts .post:not([data-category~="TODOS"]),
 [value="Facturas"]:checked ~ .posts .post:not([data-category~="Facturas"]),
-[value="Pereza"]:checked ~ .posts .post:not([data-category~="Pereza"]),
-[value="IA"]:checked ~ .posts .post:not([data-category~="IA"]){
+[value="Contabilidad"]:checked ~ .posts .post:not([data-category~="Contablilidad"]),
+[value="Funciones"]:checked ~ .posts .post:not([data-category~="Funciones"]){
     display: none;
 }
 
 [value="TODOS"]:checked ~ .container-category [for="TODOS"],
-[value="IA"]:checked ~ .container-category [for="IA"],
-[value="Pereza"]:checked ~ .container-category [for="Pereza"],
-[value="Utilidad"]:checked ~ .container-category [for="Utilidad"]{
+[value="Facturas"]:checked ~ .container-category [for="Facturas"],
+[value="Contabilidad"]:checked ~ .container-category [for="Contabilidad"],
+[value="Funciones"]:checked ~ .container-category [for="Funciones"]{
     background: #46a2fd;
     color: #fff;
 }
