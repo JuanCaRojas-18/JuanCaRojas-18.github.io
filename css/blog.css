@@ -15,7 +15,7 @@
     content: '';
     width: 100%;
     height: 100%;
-    background: rgba(242, 242, 244, 0.76);
+    background:(242, 242, 244, 0.76);
     position: absolute;
     top: 0;
     left: 0;
