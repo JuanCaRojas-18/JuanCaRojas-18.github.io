@@ -353,3 +353,76 @@ header{
         flex-wrap: wrap;
     }
 }
+
+/* --- ESTILOS DE LA PÁGINA DE CONTACTO --- */
+.contacto-wrapper {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    margin: 40px auto;
+    max-width: 650px;
+}
+
+.form-info {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-info h2 {
+    font-size: 26px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-group label i {
+    margin-right: 8px;
+    color: #007bff;
+}
+
+.input-group input, .input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus, .input-group textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0,123,255,0.1);
+    outline: none;
+}
+
+.btn-enviar-contacto {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-enviar-contacto:hover {
+    background: #0056b3;
+}
