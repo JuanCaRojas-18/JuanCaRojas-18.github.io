@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacto - Billzen</title>
+    <link rel="stylesheet" href="css/principal.css">
+    <link rel="stylesheet" href="css/blog.css">
+    <script src="https://kit.fontawesome.com/5cee24cbab.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>Billzen</h1>
+            </div>
+            <div class="menu">
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li><a href="index.html#tutoriales"><i class="fa-brands fa-youtube"></i> Tutoriales</a></li>
+                        <li><a href="articulos.html"><i class="fas fa-file-alt"></i> Blog</a></li>
+                        <li class="menu-selected"><a href="#" class="text-menu-selected"><i class="fas fa-headset"></i> Contacto</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-all">
+        <div class="blog-container-cover">
+            <div class="container-info-cover">
+                <h1>Contacto</h1>
+                <p>¿Tienes dudas sobre facturación o contabilidad? Escríbenos.</p>
+            </div>
+        </div>
+
+        <main class="container-post">
+            <section class="contacto-wrapper">
+                <div class="form-info">
+                    <h2>Envíanos un mensaje</h2>
+                    <p>Nuestro equipo técnico te responderá lo antes posible.</p>
+                </div>
+                
+                <form id="form-contacto" class="form-billzen">
+                    <div class="input-group">
+                        <label for="nombre"><i class="fas fa-user"></i> Nombre Completo</label>
+                        <input type="text" id="nombre" placeholder="Ej: Juan Camilo Rojas" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                        <input type="email" id="email" placeholder="ejemplo@correo.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="mensaje"><i class="fas fa-comment-alt"></i> Tu Mensaje</label>
+                        <textarea id="mensaje" rows="6" placeholder="Cuéntanos cómo podemos ayudarte..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-enviar-contacto">
+                        <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                    </button>
+                </form>
+            </section>
+        </main>
+
+        <div class="container-footer">
+            <footer>
+                <div class="logo-footer">
+                    <img src="Img/Logo juan Camilo.jpg" alt="Logo">
+                </div>
+                <div class="redes-footer">
+                    <a href="#"><i class="fa-brands fa-facebook icon-redes-footer"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram icon-redes-footer"></i></a>
+                    <a href="#"><i class="fa-brands fa-tiktok icon-redes-footer"></i></a>
+                </div>
+                <hr>
+                <h4>@ 2025 JuanCamiloRojas - Todos los Derechos Reservados</h4>
+            </footer>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
