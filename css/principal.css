@@ -1,5 +1,7 @@
+/* ==========================================
+   1. IMPORTACIONES Y RESET
+   ========================================== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
-
 
 *{
     margin: 0;
@@ -10,18 +12,24 @@
 }
 
 body{
-    background: #f6f6f6;
+    background: #f8fafc; /* Un gris azulado muy suave, más limpio que el anterior */
+    color: #1e293b; /* Color de texto más suave para evitar fatiga visual */
 }
 
+/* ==========================================
+   2. HEADER & NAVEGACIÓN (DISEÑO PREMIUM)
+   ========================================== */
 header{
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 80px;
-    background: #fff;
-    box-shadow: 0 4px 25px -22px black;
-    z-index: 10;
+    background: rgba(255, 255, 255, 0.9); /* Efecto translúcido */
+    backdrop-filter: blur(12px); /* Desenfoque tipo iPhone/SaaS */
+    box-shadow: 0 4px 20px -12px rgba(0,0,0,0.1);
+    z-index: 100;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .header-content{
@@ -39,10 +47,17 @@ header{
     align-items: center;
 }
 
-.logo h1 b{
-    color: #46a2fd;    
+.logo h1{
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
+.logo h1 b{
+    color: #46a2fd;
+    font-weight: 900;
+    text-transform: lowercase; /* Estilo tecnológico moderno */
+}
 
 .menu {  
     height: 80px;
@@ -68,20 +83,23 @@ header{
     position: relative;
 }
 
+/* Indicador de página seleccionada mejorado */
 .menu-selected:before{
     content: '';
     width: 100%;
-    height: 4px;
+    height: 3px;
     background: #46a2fd;
     position: absolute;
     top: 0;
     left: 0;
+    border-radius: 0 0 5px 5px;
 }
 
 .menu nav ul li a{
-    color: #777777;
-    font-size: 18px;
-    transform: color 300ms;
+    color: #64748b;
+    font-size: 17px;
+    font-weight: 500;
+    transition: all 300ms ease;
 }
 
 .menu nav ul li a:hover{
@@ -92,33 +110,24 @@ header{
     color: #46a2fd;
 }
 
-.menu nav ul li a i{
-    display: none;
-}
-
+/* ==========================================
+   3. ELEMENTOS DE INTERACCIÓN (BUSCADOR E ICONOS)
+   ========================================== */
 #icon-menu{
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     position: absolute;
     right: 20px;
-    top: 16px;
-    padding: 10px;
-    font-size: 20px;
-    background: #eeeeeefa;
-    border-radius: 100%;
-    color: #787878;
+    top: 17.5px;
     display: none;
     justify-content: center;
     align-items: center;
+    background: #f1f5f9;
+    border-radius: 10px;
+    color: #475569;
     cursor: pointer;
+    transition: all 300ms;
 }
-
-#icon-menu:hover{
-    opacity: 0.8;
-}
-
-
-/*Buscador de contenido*/
 
 #ctn-icon-search{
     position: absolute;
@@ -131,81 +140,74 @@ header{
 
 #ctn-icon-search i{
     font-size: 18px;
-    color: #777777;
+    color: #64748b;
     cursor: pointer;
     transition: all 300ms;
 }
 
 #ctn-icon-search i:hover{
     color: #46a2fd;
+    transform: scale(1.1);
 }
 
 #ctn-bars-search{
     position: fixed;
-    top: -10px;
+    top: -100px; /* Escondido por defecto */
     width: 100%;
     background: #fff;
-    padding: 20px;
-    z-index: 9;
-    transition: all 600ms;
+    padding: 30px;
+    z-index: 99;
+    transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 #ctn-bars-search input{
     display: block;
-    width: 1200px;
+    max-width: 1200px;
     margin: auto;
-    padding: 10px;
+    padding: 15px 25px;
     font-size: 18px;
     outline: 0;
+    border: 2px solid #f1f5f9;
+    border-radius: 12px;
+    background: #f8fafc;
 }
 
-#box-search{
-    position: fixed;
-    top: 156px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1200px;
-    background: #fff;
-    z-index: 8;
-    overflow: hidden;
-    display: none;
+/* ==========================================
+   4. COMPONENTES GLOBALES (BOTONES Y CARDS)
+   ========================================== */
+button {
+    background: #46a2fd;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 300ms ease;
+    box-shadow: 0 4px 12px rgba(70, 162, 253, 0.25);
 }
 
-#box-search li a{
-    display: block;
-    width: 1200px;
-    color: #777777;
-    padding: 12px 20px;
+button:hover {
+    background: #3989da;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(70, 162, 253, 0.35);
 }
 
-
-#box-search li a:hover{
-    background: #f3f3f3;
+button:active {
+    transform: translateY(-1px);
 }
 
-#box-search li a i{
-    margin-right: 10px;
-    color: #777777;
-}
-
-
-#cover-ctn-search{
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 7;
-    display: none;
-}
-
-/* Footer - pie de pagina*/
-
+/* ==========================================
+   5. FOOTER (PIE DE PÁGINA)
+   ========================================== */
 .container-footer{
     width: 100%;
-    padding: 40px 0;
+    padding: 60px 0 30px 0;
     background: #fff;
-    margin-top: 40px;
+    margin-top: 60px;
+    border-top: 1px solid #f0f0f0;
 }
 
 .container-footer footer{
@@ -215,89 +217,65 @@ header{
 
 .container-footer footer .logo-footer{
     text-align: center;
+    margin-bottom: 30px;
 }
 
 .container-footer footer .logo-footer img{
-    width: 100px;
+    width: 120px;
+    filter: grayscale(1); /* Logo en gris para un look elegante */
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.container-footer footer .logo-footer img:hover{
+    filter: grayscale(0);
+    opacity: 1;
 }
 
 .container-footer footer .redes-footer{
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    gap: 20px;
 }
 
 .container-footer footer .redes-footer .icon-redes-footer{
     font-size: 20px;
-    margin: 20px;
-    background: #efefef;
-    width: 50px;
-    height: 50px;
+    background: #f1f5f9;
+    width: 45px;
+    height: 45px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 100%;
-    color: #a2a2a2;
+    border-radius: 12px;
+    color: #64748b;
+    transition: all 0.3s;
 }
 
-.container-footer footer .redes-footer .fa-facebook:hover{
-    background: #41579A;
-    color: #fff;
-}
+.container-footer footer .redes-footer .fa-facebook:hover{ background: #1877F2; color: #fff; }
+.container-footer footer .redes-footer .fa-instagram:hover{ background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%); color: #fff; }
+.container-footer footer .redes-footer .fa-tiktok:hover{ background: #000; color: #fff; }
 
-.container-footer footer .redes-footer .fa-instagram:hover{
-    background: linear-gradient(to top right, #FCDE30, #E9712A, #D2313B, #AE4198, #7540A1, #5443A8);
-    color: #fff;
-}
-
-.container-footer footer .redes-footer .fa-tiktok:hover{
-    background: linear-gradient(90deg, #25F4EE 0%, #FE2C55 50%, #000000 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.3);
-}
-
-.container-footer footer hr{
-    margin-top: 20px;
-    border: none;
-    height: 2px;
-    color: #3838387a;
-}
- 
 .container-footer h4{
     text-align: center;
     margin-top: 40px;
-    color: #8e8e8e;
-    font-weight: 500;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 400;
 }
 
-/*Responsive Design - adaptable a dispositivos moviles*/
-
+/* ==========================================
+   6. RESPONSIVE DESIGN (MOVIL) - MANTENIDO
+   ========================================== */
 @media screen and (max-width: 1220px){
-
-    .header-content,
-    .container-footer footer{
+    .header-content, .container-footer footer{
         max-width: 1000px;
         padding: 0 20px;
     }
-    #ctn-bars-search,
-    #ctn-bars-search input,
-    box-search{
-        width: 100%;
-    }
 }
 
-
 @media screen and (max-width: 800px){
-
-    .container-all{
-        transition: all 300ms cubic-bezier(1,0,0,1);
-    }
-
-    .move-container-all{
-        transform: translateX(300px);
-    }
+    .container-all{ transition: all 300ms cubic-bezier(1,0,0,1); }
+    .move-container-all{ transform: translateX(300px); }
 
     .menu{
         width: 0px;
@@ -308,121 +286,15 @@ header{
         background: #fff;
         overflow: hidden;
         transform: translateX(-350px);
-        box-shadow: 10px 0 20px -25px black;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.05);
         transition: all 300ms cubic-bezier(1,0,0,1);
     }
 
-    .show-lateral{
-        width: 300px;
-        transform: translateX(0px);
-    }
+    .show-lateral{ width: 300px; transform: translateX(0px); }
+    .menu nav ul{ flex-direction: column; padding: 20px; }
+    .menu nav ul li{ max-width: 100%; height: 60px; justify-content: flex-start; margin: 0; }
+    .menu-selected:before{ width: 0; }
+    .menu nav ul li a i{ display: inline-block; width: 30px; color: #46a2fd; }
 
-    .menu nav ul{
-        flex-direction: column;
-    }
-
-    .menu nav ul li{
-        max-width: 200px;
-        height: 50px;
-        justify-content: flex-start;
-    }
-
-    .menu-selected:before{
-        width: 0;
-    }
-
-    .menu nav ul li a{
-        margin-top: 40px;
-        color: #858585;
-
-    }
-
-    .menu nav ul li a i{
-        width: 20px;
-        display: inline-block;
-        margin-right: 10px;
-        color: #46a2fd;
-    }
-
-    #icon-menu{
-        display: flex;
-        right: 60px;
-    }
-
-    .container-aside{
-        flex-wrap: wrap;
-    }
-}
-
-/* --- ESTILOS DE LA PÁGINA DE CONTACTO --- */
-.contacto-wrapper {
-    background: #fff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    margin: 40px auto;
-    max-width: 650px;
-}
-
-.form-info {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.form-info h2 {
-    font-size: 26px;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.input-group {
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #555;
-}
-
-.input-group label i {
-    margin-right: 8px;
-    color: #007bff;
-}
-
-.input-group input, .input-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-}
-
-.input-group input:focus, .input-group textarea:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0,123,255,0.1);
-    outline: none;
-}
-
-.btn-enviar-contacto {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn-enviar-contacto:hover {
-    background: #0056b3;
+    #icon-menu{ display: flex; right: 60px; }
 }
