@@ -1,4 +1,4 @@
-/*Portada*/
+/* /* /* /*Portada
 
 .article-container-cover{
     width: 100%;
@@ -47,7 +47,7 @@
     font-weight: 300;
 }
 
-/*contenedor - Contenido del articulo*/
+/*contenedor - Contenido del articulo
 
 .container-content{
     width: 1200px;
@@ -100,7 +100,7 @@ article img{
     margin-top: 20px;
 } 
 
-/*Aside de los articulos relacionados*/
+/*Aside de los articulos relacionados
 
 .container-aside aside{
     width: 320px;
@@ -181,4 +181,4 @@ article img{
     #icon-menu{
         right: 20px;
     }
-}
+} */ 
