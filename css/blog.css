@@ -1,6 +1,6 @@
-/* ==========================================
+/* /* ==========================================
    1. PORTADA (HERO SECTION)
-   ========================================== */
+   ========================================== 
 .blog-container-cover {
     width: 100%;
     height: 550px;
@@ -15,7 +15,7 @@
     justify-content: center;
 }
 
-/* Capa de color para legibilidad */
+/* Capa de color para legibilidad 
 .blog-container-cover:before {
     content: '';
     width: 100%;
@@ -53,7 +53,7 @@
 
 /* ==========================================
    2. CATEGORÍAS (FILTROS)
-   ========================================== */
+   ========================================== 
 input[type="radio"] {
     display: none;
 }
@@ -86,7 +86,7 @@ input[type="radio"] {
 
 /* ==========================================
    3. GRID DE MÓDULOS (POSTS)
-   ========================================== */
+   ========================================== 
 .container-post {
     max-width: 1200px;
     margin: auto;
@@ -96,7 +96,7 @@ input[type="radio"] {
 .posts {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas para mayor impacto visual */
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas para mayor impacto visual 
     grid-gap: 30px;
     padding: 20px;
 }
@@ -174,7 +174,7 @@ input[type="radio"] {
 
 /* ==========================================
    4. SISTEMA DE FILTRADO (LÓGICA CSS)
-   ========================================== */
+   ========================================== 
 [value="TODOS"]:checked ~ .posts .post[data-category] { display: flex; }
 
 [value="TODOS"]:checked ~ .posts .post:not([data-category~="TODOS"]),
@@ -184,7 +184,7 @@ input[type="radio"] {
     display: none;
 }
 
-/* Estilo del botón de filtro activo */
+/* Estilo del botón de filtro activo 
 [value="TODOS"]:checked ~ .container-category [for="TODOS"],
 [value="Facturas"]:checked ~ .container-category [for="Facturas"],
 [value="Contabilidad"]:checked ~ .container-category [for="Contabilidad"],
@@ -197,7 +197,7 @@ input[type="radio"] {
 
 /* ==========================================
    5. RESPONSIVE DESIGN (ADAPTABILIDAD)
-   ========================================== */
+   ========================================== 
 @media screen and (max-width: 1100px) {
     .posts { grid-template-columns: repeat(2, 1fr); }
 }
@@ -206,4 +206,5 @@ input[type="radio"] {
     .container-info-cover h1 { font-size: 40px; }
     .posts { grid-template-columns: repeat(1, 1fr); }
     .blog-container-cover { height: 400px; }
-}
+} 
+*/
