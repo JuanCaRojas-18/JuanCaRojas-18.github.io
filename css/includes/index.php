@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--  <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +18,7 @@
             <div class="logo">
                 <h1>Bill<b>zen</b></h1>
             </div>
-
+<!--  
             <div class="menu" id="show-menu">
                 <nav>
                     <ul>
@@ -121,7 +121,7 @@
                     <a href="#"><i class="fa-brands fa-tiktok icon-redes-footer"></i></a>               
                 </div>
                 <hr>
-                <h4>© <?php echo date("Y"); ?> Billzen - Todos los Derechos Reservados</h4>
+                <h4>© <!-- <?php echo date("Y"); ?>Billzen - Todos los Derechos Reservados</h4>
             </footer>
         </div>
 
@@ -130,3 +130,4 @@
     <script src="js/script.js"></script>
 </body>
 </html>
+-->
