@@ -1565,7 +1565,11 @@ window.addEventListener('scroll', () => {
     if (window.scrollY >= s.offsetTop - 100) current = s.id || '';
   });
   navLinks.forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    const href = a.getAttribute('href');
+    // Solo marcar activo los links internos (#seccion), nunca los externos
+    if (href && href.startsWith('#')) {
+      a.classList.toggle('active', href === '#' + current);
+    }
   });
   // Nav shadow on scroll
   document.getElementById('navbar').style.boxShadow =
