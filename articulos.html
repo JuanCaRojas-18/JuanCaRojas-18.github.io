@@ -833,13 +833,27 @@ footer {
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
-  .nav-links, .nav-cta { display: none; }
   .nav-hamburger { display: flex; }
-  .page-body { grid-template-columns: 1fr; gap: 40px; }
-  .sidebar { position: static; }
-  .more-grid { grid-template-columns: 1fr 1fr; }
-  .article-stats { grid-template-columns: 1fr 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    background: var(--bg);
+    padding: 20px 5vw 24px;
+    gap: 10px;
+    z-index: 199;
+    box-shadow: 0 8px 32px rgba(15,17,23,0.15);
+  }
+  .nav-links.open { display: flex; }
+  .nav-cta { display: none !important; }
+  .nav-links a {
+    font-size: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-links li:last-child a { border-bottom: none; }
 }
 @media (max-width: 600px) {
   .more-grid { grid-template-columns: 1fr; }
@@ -1248,17 +1262,15 @@ window.addEventListener('scroll', () => {
     window.scrollY > 20 ? '0 2px 20px rgba(15,17,23,0.08)' : 'none';
 });
 
-// Hamburger
-document.getElementById('hamburger').addEventListener('click', () => {
-  const links = document.querySelector('.nav-links');
-  const cta = document.querySelector('.nav-cta');
-  const open = links.style.display === 'flex';
-  if (open) {
-    links.style.display = 'none';
-    if (cta) cta.style.display = 'none';
-  } else {
-    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:16px 5vw;gap:4px;z-index:199;';
-    if (cta) cta.style.cssText = 'display:flex;position:absolute;top:calc(var(--nav-h) + 180px);left:0;right:0;background:var(--bg);padding:0 5vw 20px;flex-direction:column;gap:8px;z-index:199;';
+
+// Hamburger (mobile)
+const hamburger = document.getElementById('hamburger');
+hamburger.addEventListener('click', () => {
+  document.querySelector('.nav-links').classList.toggle('open');
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('nav')) {
+    document.querySelector('.nav-links').classList.remove('open');
   }
 });
 
