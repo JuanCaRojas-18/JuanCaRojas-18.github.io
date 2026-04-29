@@ -722,12 +722,27 @@ footer {
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
-  .nav-links, .nav-cta { display: none; }
   .nav-hamburger { display: flex; }
-  .page-wrap { grid-template-columns: 1fr; gap: 32px; }
-  .map-inner { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
-  .plan-selector { grid-template-columns: 1fr; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    background: var(--bg);
+    padding: 20px 5vw 24px;
+    gap: 10px;
+    z-index: 199;
+    box-shadow: 0 8px 32px rgba(15,17,23,0.15);
+  }
+  .nav-links.open { display: flex; }
+  .nav-cta { display: none !important; }
+  .nav-links a {
+    font-size: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-links li:last-child a { border-bottom: none; }
 }
 @media (max-width: 600px) {
   .form-grid { grid-template-columns: 1fr; }
@@ -1181,15 +1196,16 @@ function handleSubmit() {
     return;
   }
 
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5" stroke-dasharray="3 3"><animateTransform attributeName="transform" type="rotate" from="0 8 8" to="360 8 8" dur="1s" repeatCount="indefinite"/></circle></svg> Enviando...';
-
-  setTimeout(() => {
-    document.getElementById('form-content').style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
-  }, 1400);
-}
+// Hamburger (mobile)
+const hamburger = document.getElementById('hamburger');
+hamburger.addEventListener('click', () => {
+  document.querySelector('.nav-links').classList.toggle('open');
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('nav')) {
+    document.querySelector('.nav-links').classList.remove('open');
+  }
+});
 </script>
 </body>
 </html>
