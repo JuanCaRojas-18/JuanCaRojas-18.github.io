@@ -1,97 +1,1195 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Contacto - Billzen</title>
-    <link rel="stylesheet" href="css/principal.css">
-    <link rel="stylesheet" href="css/blog.css">
-    <script src="https://kit.fontawesome.com/5cee24cbab.js" crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contacto &mdash; Billzen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg: #f5f3ef;
+  --bg2: #eceae4;
+  --bg3: #e4e1d9;
+  --dark: #0f1117;
+  --dark2: #1a1e2a;
+  --surface: #ffffff;
+  --text: #0f1117;
+  --text2: #5a5f72;
+  --text3: #9095a8;
+  --accent: #0a6f52;
+  --accent-light: #d6f0e8;
+  --accent2: #f0a500;
+  --border: rgba(15,17,23,0.08);
+  --border2: rgba(15,17,23,0.14);
+  --shadow: 0 2px 24px rgba(15,17,23,0.07);
+  --shadow-lg: 0 8px 48px rgba(15,17,23,0.12);
+  --r: 14px;
+  --r-sm: 8px;
+  --font: 'Sora', sans-serif;
+  --font-display: 'Fraunces', serif;
+  --font-mono: 'DM Mono', monospace;
+  --nav-h: 68px;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ============ NAV ============ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  padding: 0 5vw;
+  background: rgba(245,243,239,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+.nav-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-logo-mark {
+  width: 34px; height: 34px;
+  background: var(--accent);
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.nav-logo-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.nav-logo-name em { font-style: italic; color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-links a {
+  text-decoration: none;
+  color: var(--text2);
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: var(--r-sm);
+  transition: all 0.15s;
+}
+.nav-links a:hover { color: var(--text); background: var(--bg2); }
+.nav-links a.active { color: var(--accent); font-weight: 500; }
+.nav-cta { display: flex; align-items: center; gap: 10px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s;
+  border: none;
+  font-family: var(--font);
+}
+.btn-ghost { color: var(--text2); background: transparent; border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--bg2); color: var(--text); }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 2px 12px rgba(10,111,82,0.25); }
+.btn-primary:hover { background: #085e45; transform: translateY(-1px); }
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 6px; border: none; background: none;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
+
+/* ============ HERO ============ */
+.contact-hero {
+  padding-top: var(--nav-h);
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  display: flex;
+  align-items: flex-end;
+}
+.contact-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(10,111,82,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(91,158,245,0.08) 0%, transparent 50%);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 56px 5vw 52px;
+  position: relative;
+  z-index: 2;
+}
+.hero-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 18px;
+}
+.breadcrumb-sep { opacity: 0.3; }
+.breadcrumb-current { color: var(--accent); }
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(10,111,82,0.15);
+  border: 1px solid rgba(10,111,82,0.25);
+  color: #4AE8A4;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  margin-bottom: 18px;
+}
+.hero-dot { width: 6px; height: 6px; background: #4AE8A4; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+.contact-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 50px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  color: #fff;
+  max-width: 600px;
+  margin-bottom: 16px;
+}
+.contact-hero h1 em { font-style: italic; color: #4AE8A4; }
+.hero-sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.45);
+  font-weight: 300;
+  max-width: 480px;
+}
+
+/* ============ MAIN CONTENT ============ */
+.page-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 5vw 80px;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ============ FORM CARD ============ */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.form-card-header {
+  background: var(--dark2);
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.form-card-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), #2dd4a7);
+}
+.form-card-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  font-style: italic;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.form-card-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 300;
+}
+.form-card-body { padding: 28px; }
+
+/* Tabs -->*/
+.form-tabs {
+  display: flex;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+.form-tab {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  transition: all 0.18s;
+  text-align: center;
+}
+.form-tab.active {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+/* Form fields */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: span 2; }
+.form-label {
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.form-input {
+  background: var(--bg);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--r-sm);
+  padding: 11px 14px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input::placeholder { color: var(--text3); }
+.form-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(10,111,82,0.08);
+  background: var(--surface);
+}
+textarea.form-input { resize: vertical; min-height: 110px; }
+select.form-input { cursor: pointer; }
+
+/* Plan selector */
+.plan-selector {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.plan-opt {
+  border: 1.5px solid var(--border2);
+  border-radius: var(--r-sm);
+  padding: 10px 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.18s;
+  background: var(--bg);
+}
+.plan-opt:hover { border-color: var(--accent); background: var(--accent-light); }
+.plan-opt.selected { border-color: var(--accent); background: var(--accent-light); }
+.plan-opt-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.plan-opt-price { font-size: 11px; font-family: var(--font-mono); color: var(--text3); margin-top: 2px; }
+.plan-opt.selected .plan-opt-name { color: var(--accent); }
+.plan-opt.selected .plan-opt-price { color: var(--accent); }
+
+/* Submit */
+.form-submit-row { margin-top: 20px; }
+.form-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm);
+  font-size: 15px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.form-submit:hover { background: #085e45; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(10,111,82,0.3); }
+.form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.form-note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 12px;
+  font-family: var(--font-mono);
+}
+
+/* Success state */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+.success-icon {
+  width: 60px; height: 60px;
+  background: var(--accent-light);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 16px;
+  font-size: 28px;
+}
+.success-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.success-sub { font-size: 14px; color: var(--text2); font-weight: 300; }
+
+/* ============ SIDEBAR ============ */
+.contact-sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+/* Info card */
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 26px;
+  transition: border-color 0.2s;
+}
+.info-card:hover { border-color: var(--border2); }
+.info-card-title {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 18px;
+}
+.info-items { display: flex; flex-direction: column; gap: 14px; }
+.info-item { display: flex; align-items: flex-start; gap: 14px; }
+.info-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: all 0.18s;
+}
+.info-item:hover .info-icon { background: var(--accent-light); border-color: var(--accent); }
+.info-text-label { font-size: 11px; font-family: var(--font-mono); color: var(--text3); margin-bottom: 2px; }
+.info-text-val { font-size: 14px; font-weight: 500; color: var(--text); }
+.info-text-sub { font-size: 12px; color: var(--text2); font-weight: 300; }
+
+/* Horarios */
+.schedule-card {
+  background: var(--dark);
+  border-radius: var(--r);
+  padding: 24px 26px;
+  position: relative;
+  overflow: hidden;
+}
+.schedule-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), #2dd4a7);
+}
+.schedule-title {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 16px;
+}
+.schedule-rows { display: flex; flex-direction: column; gap: 10px; }
+.schedule-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-sm);
+}
+.sched-day { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 300; }
+.sched-hours { font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,0.85); }
+.sched-badge {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.badge-open { background: rgba(74,232,164,0.15); color: #4AE8A4; }
+.badge-closed { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.3); }
+
+/* Equipo card */
+.team-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 26px;
+}
+.team-title {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+.team-members { display: flex; flex-direction: column; gap: 14px; }
+.team-member { display: flex; align-items: center; gap: 12px; }
+.tm-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+}
+.tm-name { font-size: 13.5px; font-weight: 600; color: var(--text); }
+.tm-role { font-size: 11.5px; color: var(--text3); font-family: var(--font-mono); }
+.tm-links { display: flex; gap: 6px; margin-top: 4px; }
+.tm-link {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  text-decoration: none;
+  background: var(--accent-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+.tm-link:hover { background: var(--accent); color: #fff; }
+
+/* FAQ card */
+.faq-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.faq-title {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 20px 24px 12px;
+}
+.faq-item {
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+  transition: background 0.15s;
+  gap: 12px;
+}
+.faq-question:hover { background: var(--bg); }
+.faq-chevron {
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  transition: transform 0.25s;
+  color: var(--text3);
+}
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s;
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 300;
+  line-height: 1.65;
+  padding: 0 24px;
+}
+.faq-item.open .faq-answer { max-height: 200px; padding: 0 24px 16px; }
+
+/* ============ MAP SECTION ============ */
+.map-section {
+  background: var(--dark);
+  padding: 56px 5vw;
+  margin-top: 0;
+}
+.map-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.map-left {}
+.map-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #4AE8A4;
+  background: rgba(74,232,164,0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.map-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.8px;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.map-title em { font-style: italic; color: #4AE8A4; }
+.map-sub { font-size: 14px; color: rgba(255,255,255,0.45); font-weight: 300; line-height: 1.7; margin-bottom: 28px; }
+.map-details { display: flex; flex-direction: column; gap: 12px; }
+.map-detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.55);
+}
+.map-detail-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.map-visual {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r);
+  overflow: hidden;
+  height: 300px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Mapa ilustrado SVG */
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.map-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+.map-pin {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -60%);
+  text-align: center;
+}
+.map-pin-dot {
+  width: 16px; height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto;
+  box-shadow: 0 0 0 4px rgba(10,111,82,0.2), 0 0 0 8px rgba(10,111,82,0.1);
+  animation: ping 2s infinite;
+}
+@keyframes ping {
+  0%,100% { box-shadow: 0 0 0 4px rgba(10,111,82,0.2), 0 0 0 8px rgba(10,111,82,0.1); }
+  50% { box-shadow: 0 0 0 6px rgba(10,111,82,0.15), 0 0 0 14px rgba(10,111,82,0.05); }
+}
+.map-pin-label {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+  margin-top: 10px;
+  white-space: nowrap;
+}
+.map-pin-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.map-pin-addr { font-size: 11px; color: var(--text3); font-family: var(--font-mono); }
+
+/* ============ FOOTER ============ */
+footer {
+  background: #080b0f;
+  padding: 56px 5vw 32px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 32px;
+}
+.footer-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; text-decoration: none;
+}
+.footer-logo-name { font-family: var(--font-display); font-size: 20px; font-style: italic; color: #fff; }
+.footer-tagline { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.6; max-width: 220px; font-weight: 300; }
+.footer-socials { display: flex; gap: 10px; margin-top: 20px; }
+.social-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--r-sm);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: grid; place-items: center;
+  text-decoration: none; transition: all 0.15s; font-size: 16px;
+}
+.social-btn:hover { background: rgba(255,255,255,0.1); }
+.footer-col-title { font-size: 12px; font-family: var(--font-mono); letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { text-decoration: none; font-size: 13.5px; color: rgba(255,255,255,0.45); transition: color 0.15s; font-weight: 300; }
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; }
+.footer-copy { font-size: 12.5px; color: rgba(255,255,255,0.2); font-family: var(--font-mono); }
+.dian-badge { background: rgba(74,232,164,0.1); border: 1px solid rgba(74,232,164,0.2); color: #4AE8A4; padding: 3px 10px; border-radius: 20px; font-size: 10.5px; font-family: var(--font-mono); }
+
+/* ============ ANIMATIONS ============ */
+.fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up:nth-child(2) { transition-delay: 0.08s; }
+.fade-up:nth-child(3) { transition-delay: 0.16s; }
+.fade-up:nth-child(4) { transition-delay: 0.24s; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 960px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .page-wrap { grid-template-columns: 1fr; gap: 32px; }
+  .map-inner { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .plan-selector { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: span 1; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 12px; }
+  .map-visual { height: 220px; }
+}
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <h1>Billzen</h1>
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 18 18" fill="none" width="18" height="18">
+          <rect x="2" y="2" width="6" height="6" rx="1.5" fill="white"/>
+          <rect x="10" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
+          <rect x="2" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
+          <rect x="10" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.3"/>
+        </svg>
+      </div>
+      <span class="nav-logo-name">Bill<em>zen</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+      <li><a href="index.html#planes">Planes</a></li>
+      <li><a href="articulos.html">Blog</a></li>
+      <li><a href="contactos.html" class="active">Contacto</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="index.html#planes" class="btn btn-ghost">Ver planes</a>
+      <a href="#form-section" class="btn btn-primary">Escribirnos</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="contact-hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-breadcrumb">
+      <span>Billzen</span>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">Contacto</span>
+    </div>
+    <div class="hero-tag">
+      <div class="hero-dot"></div>
+      Respondemos en menos de 24 horas
+    </div>
+    <h1>Hablemos de<br/><em>tu empresa</em></h1>
+    <p class="hero-sub">Nuestro equipo te asesora sin costo. Cu&eacute;ntanos sobre tu negocio y encontramos juntos la mejor soluci&oacute;n contable.</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page-wrap" id="form-section">
+
+  <!-- FORMULARIO -->
+  <div class="form-card fade-up">
+    <div class="form-card-header">
+      <div class="form-card-title">Env&iacute;anos un mensaje</div>
+      <div class="form-card-sub">Completa el formulario y te contactamos en menos de 24 horas h&aacute;biles</div>
+    </div>
+    <div class="form-card-body">
+
+      <!-- Tabs -->
+      <div class="form-tabs">
+        <button class="form-tab active" onclick="switchTab(this, 'demo')">Solicitar demo</button>
+        <button class="form-tab" onclick="switchTab(this, 'soporte')">Soporte t&eacute;cnico</button>
+        <button class="form-tab" onclick="switchTab(this, 'ventas')">Hablar con ventas</button>
+      </div>
+
+      <!-- Form content -->
+      <div id="form-content">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nombre *</label>
+            <input type="text" class="form-input" id="nombre" placeholder="Tu nombre completo" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Empresa *</label>
+            <input type="text" class="form-input" id="empresa" placeholder="Nombre de tu empresa" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Correo electr&oacute;nico *</label>
+            <input type="email" class="form-input" id="correo" placeholder="correo@empresa.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tel&eacute;fono</label>
+            <input type="tel" class="form-input" id="telefono" placeholder="+57 300 000 0000" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">NIT de la empresa</label>
+            <input type="text" class="form-input" id="nit" placeholder="900.123.456-7" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tama&ntilde;o de la empresa</label>
+            <select class="form-input" id="tamano">
+              <option value="" disabled selected>Selecciona</option>
+              <option>1 &mdash; 5 empleados</option>
+              <option>6 &mdash; 20 empleados</option>
+              <option>21 &mdash; 50 empleados</option>
+              <option>M&aacute;s de 50 empleados</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label">Plan de inter&eacute;s</label>
+            <div class="plan-selector">
+              <div class="plan-opt selected" onclick="selectPlan(this)">
+                <div class="plan-opt-name">Starter</div>
+                <div class="plan-opt-price">$89K / mes</div>
+              </div>
+              <div class="plan-opt" onclick="selectPlan(this)">
+                <div class="plan-opt-name">Business</div>
+                <div class="plan-opt-price">$249K / mes</div>
+              </div>
+              <div class="plan-opt" onclick="selectPlan(this)">
+                <div class="plan-opt-name">Enterprise</div>
+                <div class="plan-opt-price">A medida</div>
+              </div>
             </div>
-            <div class="menu">
-                <nav>
-                    <ul>
-                        <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
-                        <li><a href="index.html#tutoriales"><i class="fa-brands fa-youtube"></i> Tutoriales</a></li>
-                        <li><a href="articulos.html"><i class="fas fa-file-alt"></i> Blog</a></li>
-                        <li class="menu-selected">
-                            <a href="contactos.html" class="text-menu-selected"><i class="fas fa-headset"></i> Contacto</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="search-icon">
-                <i class="fas fa-search" id="icon-search"></i>
-            </div>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label">Mensaje *</label>
+            <textarea class="form-input" id="mensaje" placeholder="Cu&eacute;ntanos sobre tu empresa, necesidades y cualquier pregunta que tengas..."></textarea>
+          </div>
         </div>
-    </header>
 
-    <div class="container-all" id="move-content">
-        <div class="blog-container-cover">
-            <div class="container-info-cover">
-                <h1>Contacto</h1>
-                <p>¿Tienes dudas sobre facturación o contabilidad? Escríbenos.</p>
-            </div>
+        <div class="form-submit-row">
+          <button class="form-submit" id="submit-btn" onclick="handleSubmit()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h10M9 5l3 3-3 3" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Enviar mensaje
+          </button>
+          <div class="form-note">&#x1F512; Tus datos est&aacute;n protegidos. No compartimos tu informaci&oacute;n con terceros.</div>
         </div>
+      </div>
 
-        <main class="container-post">
-            <section class="contacto-wrapper">
-                <div class="form-info">
-                    <h2>Envíanos un mensaje</h2>
-                    <p>Nuestro equipo técnico te responderá lo antes posible.</p>
-                </div>
-                
-                <form id="form-contacto" class="form-billzen">
-                    <div class="input-group">
-                        <label for="nombre"><i class="fas fa-user"></i> Nombre Completo</label>
-                        <input type="text" id="nombre" placeholder="Ej: Juan Camilo Rojas" required>
-                    </div>
+      <!-- Success -->
+      <div class="form-success" id="form-success">
+        <div class="success-icon">&#x2705;</div>
+        <div class="success-title">Mensaje enviado</div>
+        <div class="success-sub">Recibimos tu solicitud. El equipo Billzen te contactar&aacute; en menos de 24 horas h&aacute;biles al correo registrado.</div>
+      </div>
 
-                    <div class="input-group">
-                        <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
-                        <input type="email" id="email" placeholder="juanr2000k@gmail.com" required>
-                    </div>
+    </div>
+  </div>
 
-                    <div class="input-group">
-                        <label for="mensaje"><i class="fas fa-comment-alt"></i> Tu Mensaje</label>
-                        <textarea id="mensaje" rows="6" placeholder="Cuéntanos cómo podemos ayudarte..." required></textarea>
-                    </div>
+  <!-- SIDEBAR -->
+  <aside class="contact-sidebar">
 
-                    <button type="submit" class="btn-enviar-contacto">
-                        <i class="fas fa-paper-plane"></i> Enviar Mensaje
-                    </button>
-                </form>
-            </section>
-        </main>
-
-        <div class="container-footer">
-            <footer>
-                <div class="logo-footer">
-                    <img src="Img/Logo juan Camilo.jpg" alt="Logo">
-                </div>
-                <div class="redes-footer">
-                    <a href="#"><i class="fa-brands fa-facebook icon-redes-footer"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram icon-redes-footer"></i></a>
-                    <a href="#"><i class="fa-brands fa-tiktok icon-redes-footer"></i></a>
-                </div>
-                <hr>
-                <h4>@ 2025 JuanCamiloRojas - Todos los Derechos Reservados</h4>
-            </footer>
+    <!-- Información de contacto -->
+    <div class="info-card fade-up">
+      <div class="info-card-title">&#x1F4DE; Inf. de contacto</div>
+      <div class="info-items">
+        <div class="info-item">
+          <div class="info-icon">&#x1F4E7;</div>
+          <div>
+            <div class="info-text-label">Correo</div>
+            <div class="info-text-val">soporte@billzen.co</div>
+            <div class="info-text-sub">Respuesta en &lt; 24h h&aacute;biles</div>
+          </div>
         </div>
+        <div class="info-item">
+          <div class="info-icon">&#x1F4F1;</div>
+          <div>
+            <div class="info-text-label">WhatsApp</div>
+            <div class="info-text-val">+57 300 000 0000</div>
+            <div class="info-text-sub">Lun &mdash; Vie, 8am a 6pm</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">&#x1F4CD;</div>
+          <div>
+            <div class="info-text-label">Ubicaci&oacute;n</div>
+            <div class="info-text-val">Bogot&aacute;, Colombia</div>
+            <div class="info-text-sub">Atenci&oacute;n virtual y presencial</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">&#x1F310;</div>
+          <div>
+            <div class="info-text-label">Web</div>
+            <div class="info-text-val">billzen.co</div>
+            <div class="info-text-sub">Disponible 24/7</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="ctn-bars-search">
-        <input type="text" id="inputSearch" placeholder="¿Qué deseas buscar?">
+    <!-- Horarios -->
+    <div class="schedule-card fade-up">
+      <div class="schedule-title">&#x1F550; Horarios de atenci&oacute;n</div>
+      <div class="schedule-rows">
+        <div class="schedule-row">
+          <span class="sched-day">Lunes &mdash; Viernes</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="sched-hours">8:00 &mdash; 18:00</span>
+            <span class="sched-badge badge-open">Abierto</span>
+          </div>
+        </div>
+        <div class="schedule-row">
+          <span class="sched-day">S&aacute;bados</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="sched-hours">9:00 &mdash; 13:00</span>
+            <span class="sched-badge badge-open">Abierto</span>
+          </div>
+        </div>
+        <div class="schedule-row">
+          <span class="sched-day">Domingos</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="sched-hours">&mdash;</span>
+            <span class="sched-badge badge-closed">Cerrado</span>
+          </div>
+        </div>
+        <div class="schedule-row">
+          <span class="sched-day">Soporte t&eacute;cnico</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="sched-hours">24 / 7</span>
+            <span class="sched-badge badge-open">Online</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="cover-ctn-search"></div>
 
-    <script src="js/script.js"></script>
+    <!-- Equipo -->
+    <div class="team-card fade-up">
+      <div class="team-title">&#x1F465; Equipo Billzen</div>
+      <div class="team-members">
+        <div class="team-member">
+          <div class="tm-avatar" style="background:linear-gradient(135deg,#0a6f52,#2dd4a7)">JR</div>
+          <div>
+            <div class="tm-name">Juan Camilo Rojas</div>
+            <div class="tm-role">Co-fundador &bull; Frontend</div>
+            <div class="tm-links">
+              <a href="https://github.com/JuanCaRojas-18" class="tm-link" target="_blank">GitHub</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="tm-avatar" style="background:linear-gradient(135deg,#1a5fa8,#5B9EF5)">CA</div>
+          <div>
+            <div class="tm-name">Camilo Alarc&oacute;n</div>
+            <div class="tm-role">Co-fundador &bull; Backend</div>
+            <div class="tm-links">
+              <a href="https://github.com/bill-zen-desarrollo" class="tm-link" target="_blank">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-card fade-up">
+      <div class="faq-title">&#x2753; Preguntas frecuentes</div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          &iquest;Hay periodo de prueba gratuito?
+          <svg class="faq-chevron" viewBox="0 0 18 18" fill="none"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="faq-answer">S&iacute;, ofrecemos 14 d&iacute;as de prueba gratuita sin necesidad de tarjeta de cr&eacute;dito. Acceso completo a todas las funcionalidades del plan Business.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          &iquest;Cu&aacute;nto tiempo tarda la configuraci&oacute;n?
+          <svg class="faq-chevron" viewBox="0 0 18 18" fill="none"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="faq-answer">La configuraci&oacute;n inicial tarda menos de 5 minutos. Nuestro equipo te acompa&ntilde;a en la habilitaci&oacute;n DIAN y migraci&oacute;n de datos sin costo adicional.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          &iquest;Funciona con mi certificado digital actual?
+          <svg class="faq-chevron" viewBox="0 0 18 18" fill="none"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="faq-answer">S&iacute;, Billzen es compatible con todos los certificados digitales emitidos por entidades certificadoras autorizadas por la DIAN en Colombia.</div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- MAPA / UBICACIÓN -->
+<div class="map-section">
+  <div class="map-inner">
+    <div class="map-left fade-up">
+      <div class="map-tag">&#x1F4CD; Ubicaci&oacute;n</div>
+      <h2 class="map-title">Basados en<br/><em>Bogot&aacute;</em>, Colombia</h2>
+      <p class="map-sub">Atendemos a empresas en todo el territorio nacional de forma virtual. Para reuniones presenciales en Bogot&aacute;, ag&eacute;ndalas con nuestro equipo.</p>
+      <div class="map-details">
+        <div class="map-detail">
+          <div class="map-detail-icon">&#x1F3EB;</div>
+          Cundinamarca, Bogot&aacute; D.C., Colombia
+        </div>
+        <div class="map-detail">
+          <div class="map-detail-icon">&#x1F4BB;</div>
+          Atenci&oacute;n virtual a todo Colombia
+        </div>
+        <div class="map-detail">
+          <div class="map-detail-icon">&#x23F0;</div>
+          GMT-5 &bull; Hora Colombia
+        </div>
+      </div>
+    </div>
+    <div class="map-visual fade-up">
+      <div class="map-placeholder">
+        <div class="map-grid-lines"></div>
+        <div class="map-pin">
+          <div class="map-pin-dot"></div>
+          <div class="map-pin-label">
+            <div class="map-pin-name">Billzen HQ</div>
+            <div class="map-pin-addr">Bogot&aacute;, Colombia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="index.html" class="footer-logo">
+          <div class="nav-logo-mark" style="width:30px;height:30px;border-radius:8px;">
+            <svg viewBox="0 0 18 18" fill="none" width="16" height="16">
+              <rect x="2" y="2" width="6" height="6" rx="1.5" fill="white"/>
+              <rect x="10" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
+              <rect x="2" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
+              <rect x="10" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.3"/>
+            </svg>
+          </div>
+          <span class="footer-logo-name">Billzen</span>
+        </a>
+        <p class="footer-tagline">Sistema contable y de facturaci&oacute;n electr&oacute;nica para MiPyMEs colombianas.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn" aria-label="Facebook">&#x1F426;</a>
+          <a href="#" class="social-btn" aria-label="Instagram">&#x1F4F7;</a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">&#x1F517;</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Producto</div>
+        <ul class="footer-links">
+          <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+          <li><a href="index.html#planes">Planes</a></li>
+          <li><a href="index.html#como-funciona">C&oacute;mo funciona</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Empresa</div>
+        <ul class="footer-links">
+          <li><a href="#">Nosotros</a></li>
+          <li><a href="articulos.html">Blog</a></li>
+          <li><a href="contactos.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">T&eacute;rminos de uso</a></li>
+          <li><a href="#">Privacidad</a></li>
+          <li><a href="#">Seguridad</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2025 Billzen &mdash; Juan Camilo Rojas &amp; Camilo Alarc&oacute;n. Todos los derechos reservados.</div>
+      <span class="dian-badge">DIAN Habilitado</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll fade-up
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+// Nav shadow
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.boxShadow =
+    window.scrollY > 20 ? '0 2px 20px rgba(15,17,23,0.08)' : 'none';
+});
+
+// Hamburger
+document.getElementById('hamburger').addEventListener('click', () => {
+  const links = document.querySelector('.nav-links');
+  const cta = document.querySelector('.nav-cta');
+  const open = links.style.display === 'flex';
+  if (open) {
+    links.style.display = 'none';
+    if (cta) cta.style.display = 'none';
+  } else {
+    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:16px 5vw;gap:4px;z-index:199;';
+    if (cta) cta.style.cssText = 'display:flex;position:absolute;top:calc(var(--nav-h) + 180px);left:0;right:0;background:var(--bg);padding:0 5vw 20px;flex-direction:column;gap:8px;z-index:199;';
+  }
+});
+
+// Tabs
+function switchTab(btn, type) {
+  document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const placeholders = {
+    demo: 'Cuéntanos sobre tu empresa y te agendamos una demo personalizada...',
+    soporte: 'Describe el problema técnico que estás experimentando...',
+    ventas: 'Cuéntanos sobre tu empresa y lo que necesitas...'
+  };
+  document.getElementById('mensaje').placeholder = placeholders[type];
+}
+
+// Plan selector
+function selectPlan(el) {
+  document.querySelectorAll('.plan-opt').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// FAQ toggle
+function toggleFaq(question) {
+  const item = question.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Form submit
+function handleSubmit() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const correo = document.getElementById('correo').value.trim();
+  const mensaje = document.getElementById('mensaje').value.trim();
+
+  if (!nombre || !correo || !mensaje) {
+    const empties = [];
+    if (!nombre) empties.push('nombre');
+    if (!correo) empties.push('correo');
+    if (!mensaje) empties.push('mensaje');
+    empties.forEach(id => {
+      const el = document.getElementById(id);
+      el.style.borderColor = '#c94040';
+      el.addEventListener('input', () => el.style.borderColor = '', { once: true });
+    });
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5" stroke-dasharray="3 3"><animateTransform attributeName="transform" type="rotate" from="0 8 8" to="360 8 8" dur="1s" repeatCount="indefinite"/></circle></svg> Enviando...';
+
+  setTimeout(() => {
+    document.getElementById('form-content').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }, 1400);
+}
+</script>
 </body>
 </html>
