@@ -1621,8 +1621,9 @@ hamburger.addEventListener('click', () => {
   if (open) {
     closeMenu();
   } else {
-    navLinks.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:20px 5vw;gap:8px;z-index:199;box-shadow:0 8px 32px rgba(15,17,23,0.12);';
-    navCta.style.cssText = 'display:flex;position:fixed;top:calc(var(--nav-h) + 220px);left:0;right:0;background:var(--bg);padding:0 5vw 20px;flex-direction:column;gap:8px;z-index:199;';
+    navLinks.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);padding:20px 5vw 16px;gap:8px;z-index:199;box-shadow:none;';
+    navCta.style.cssText = 'display:flex;position:fixed;top:calc(var(--nav-h) + 228px);left:0;right:0;background:var(--bg);padding:0 5vw 20px;flex-direction:column;gap:8px;z-index:199;border-top:1px solid var(--border);';
+    navCta.style.top = `calc(var(--nav-h) + ${navLinks.offsetHeight}px)`;
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
   }
