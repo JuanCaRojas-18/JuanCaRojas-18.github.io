@@ -1608,7 +1608,7 @@ document.getElementById('hamburger').addEventListener('click', () => {
     links.style.display = 'none';
     if (cta) cta.style.display = 'none';
   } else {
-    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:16px 5vw;gap:4px;';
+    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:16px 5vw;gap:4px;z-index:199;overflow-y:auto;max-height:80vh;';
     if (cta) cta.style.cssText = 'display:flex;position:absolute;top:calc(var(--nav-h) + 220px);left:0;right:0;background:var(--bg);padding:0 5vw 20px;flex-direction:column;gap:8px;';
   }
 });
