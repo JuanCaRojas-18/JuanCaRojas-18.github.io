@@ -833,6 +833,8 @@ footer {
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
+  #nav-links-menu { display: none !important; }
+  #nav-links-menu.open { display: flex !important; }
   .nav-hamburger { display: flex; }
   .nav-links { display: none !important; }
   .nav-links.open { display: flex !important; }
@@ -891,7 +893,7 @@ footer {
       </div>
       <span class="nav-logo-name">Bill<em>zen</em></span>
     </a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links-menu">
       <li><a href="index.html">Inicio</a></li>
       <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
       <li><a href="articulos.html" class="active">Blog</a></li>
@@ -1271,11 +1273,11 @@ window.addEventListener('scroll', () => {
 // Hamburger (mobile)
 const hamburger = document.getElementById('hamburger');
 hamburger.addEventListener('click', () => {
-  document.querySelector('.nav-links').classList.toggle('open');
+  getElementById('nav-links-menu').classList.toggle('open');
 });
 document.addEventListener('click', (e) => {
   if (!e.target.closest('nav')) {
-    document.querySelector('.nav-links').classList.remove('open');
+    getElementById('nav-links-menu').classList.remove('open');
   }
 });
 
