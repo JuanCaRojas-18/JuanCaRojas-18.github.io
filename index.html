@@ -1600,11 +1600,11 @@ function handleSubmit(btn) {
 }
  
 // Hamburger (mobile)
+// Hamburger (mobile)
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.querySelector('.nav-links');
 const navCta = document.querySelector('.nav-cta');
 
-// Crear overlay
 const overlay = document.createElement('div');
 overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,17,23,0.5);z-index:198;display:none;backdrop-filter:blur(2px);';
 document.body.appendChild(overlay);
@@ -1621,11 +1621,15 @@ hamburger.addEventListener('click', () => {
   if (open) {
     closeMenu();
   } else {
-    navLinks.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);padding:20px 5vw 16px;gap:8px;z-index:199;box-shadow:none;';
-    navCta.style.cssText = 'display:flex;position:fixed;top:calc(var(--nav-h) + 228px);left:0;right:0;background:var(--bg);padding:0 5vw 20px;flex-direction:column;gap:8px;z-index:199;border-top:1px solid var(--border);';
-    navCta.style.top = `calc(var(--nav-h) + ${navLinks.offsetHeight}px)`;
+    navLinks.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);padding:20px 5vw 0;gap:8px;z-index:199;';
+    navCta.style.cssText = 'display:flex;position:fixed;left:0;right:0;background:var(--bg);padding:12px 5vw 20px;flex-direction:column;gap:8px;z-index:199;border-top:1px solid var(--border);';
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    // Posicionar navCta justo debajo de navLinks con setTimeout
+    setTimeout(() => {
+      const h = navLinks.getBoundingClientRect().bottom;
+      navCta.style.top = h + 'px';
+    }, 10);
   }
 });
 
