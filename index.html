@@ -1600,18 +1600,35 @@ function handleSubmit(btn) {
 }
  
 // Hamburger (mobile)
-document.getElementById('hamburger').addEventListener('click', () => {
-  const links = document.querySelector('.nav-links');
-  const cta = document.querySelector('.nav-cta');
-  const open = links.style.display === 'flex';
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.querySelector('.nav-links');
+const navCta = document.querySelector('.nav-cta');
+
+// Crear overlay
+const overlay = document.createElement('div');
+overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,17,23,0.5);z-index:198;display:none;backdrop-filter:blur(2px);';
+document.body.appendChild(overlay);
+
+function closeMenu() {
+  navLinks.style.display = 'none';
+  navCta.style.display = 'none';
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', () => {
+  const open = navLinks.style.display === 'flex';
   if (open) {
-    links.style.display = 'none';
-    if (cta) cta.style.display = 'none';
+    closeMenu();
   } else {
-    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:16px 5vw;gap:4px;z-index:199;overflow-y:auto;max-height:80vh;';
-    if (cta) cta.style.cssText = 'display:flex;position:absolute;top:calc(var(--nav-h) + 220px);left:0;right:0;background:var(--bg);padding:0 5vw 20px;flex-direction:column;gap:8px;';
+    navLinks.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:20px 5vw;gap:8px;z-index:199;box-shadow:0 8px 32px rgba(15,17,23,0.12);';
+    navCta.style.cssText = 'display:flex;position:fixed;top:calc(var(--nav-h) + 220px);left:0;right:0;background:var(--bg);padding:0 5vw 20px;flex-direction:column;gap:8px;z-index:199;';
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
   }
 });
+
+overlay.addEventListener('click', closeMenu);
 </script>
 </body>
 </html>
