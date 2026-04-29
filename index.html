@@ -1600,7 +1600,6 @@ function handleSubmit(btn) {
 }
  
 // Hamburger (mobile)
-// Hamburger (mobile)
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.querySelector('.nav-links');
 const navCta = document.querySelector('.nav-cta');
@@ -1609,9 +1608,21 @@ const overlay = document.createElement('div');
 overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,17,23,0.5);z-index:198;display:none;backdrop-filter:blur(2px);';
 document.body.appendChild(overlay);
 
+// Clonar botones del navCta dentro del navLinks para móvil
+const mobileButtons = document.createElement('li');
+mobileButtons.id = 'mobile-cta-buttons';
+mobileButtons.style.cssText = 'display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--border);margin-top:4px;';
+mobileButtons.innerHTML = `
+  <a href="index.html#planes" style="display:block;text-align:center;padding:10px;border:1px solid rgba(15,17,23,0.14);border-radius:8px;color:var(--text2);text-decoration:none;font-size:14px;font-weight:500;">Ver planes</a>
+  <a href="contactos.html" style="display:block;text-align:center;padding:10px;background:var(--accent);border-radius:8px;color:#fff;text-decoration:none;font-size:14px;font-weight:500;">Empezar gratis</a>
+`;
+navLinks.appendChild(mobileButtons);
+document.getElementById('mobile-cta-buttons').style.display = 'none';
+
 function closeMenu() {
   navLinks.style.display = 'none';
   navCta.style.display = 'none';
+  document.getElementById('mobile-cta-buttons').style.display = 'none';
   overlay.style.display = 'none';
   document.body.style.overflow = '';
 }
@@ -1621,15 +1632,12 @@ hamburger.addEventListener('click', () => {
   if (open) {
     closeMenu();
   } else {
-    navLinks.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);padding:20px 5vw 0;gap:8px;z-index:199;';
-    navCta.style.cssText = 'display:flex;position:fixed;left:0;right:0;background:var(--bg);padding:12px 5vw 20px;flex-direction:column;gap:8px;z-index:199;border-top:1px solid var(--border);';
+    navLinks.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);padding:20px 5vw;gap:8px;z-index:199;box-shadow:0 8px 32px rgba(15,17,23,0.12);';
+    navCta.style.display = 'none';
+    document.getElementById('mobile-cta-buttons').style.display = 'flex';
+    document.getElementById('mobile-cta-buttons').style.flexDirection = 'column';
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
-    // Posicionar navCta justo debajo de navLinks con setTimeout
-    setTimeout(() => {
-      const h = navLinks.getBoundingClientRect().bottom;
-      navCta.style.top = h + 'px';
-    }, 10);
   }
 });
 
