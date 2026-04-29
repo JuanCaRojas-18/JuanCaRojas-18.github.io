@@ -1,4 +1,4 @@
-// ==========================================
+/* // ==========================================
 // 1. MENÚ LATERAL (RESPONSIVE)
 // ==========================================
 document.getElementById("icon-menu").addEventListener("click", mostrar_menu);
@@ -91,4 +91,4 @@ if (contactoForm) {
         alert("¡Gracias " + nombre + "! Mensaje enviado con éxito a Billzen (Simulación).");
         this.reset();
     });
-}
+} */
