@@ -723,7 +723,8 @@ footer {
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
   .nav-hamburger { display: flex; }
-  .nav-links {
+  .nav-cta { display: none !important; }
+  #nav-links-menu {
     display: none;
     flex-direction: column;
     position: fixed;
@@ -735,14 +736,19 @@ footer {
     z-index: 199;
     box-shadow: 0 8px 32px rgba(15,17,23,0.15);
   }
-  .nav-links.open { display: flex; }
-  .nav-cta { display: none !important; }
-  .nav-links a {    
+  #nav-links-menu.open { display: flex; }
+  #nav-links-menu a {
     font-size: 15px;
     padding: 10px 0;
     border-bottom: 1px solid var(--border);
   }
-  .nav-links li:last-child a { border-bottom: none; }
+  #nav-links-menu li:last-child a { border-bottom: none; }
+  .page-wrap { grid-template-columns: 1fr; gap: 32px; }
+  .map-inner { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .plan-selector { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: span 1; }
 }
 @media (max-width: 600px) {
   .form-grid { grid-template-columns: 1fr; }
@@ -769,7 +775,7 @@ footer {
       </div>
       <span class="nav-logo-name">Bill<em>zen</em></span>
     </a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links-menu">
       <li><a href="index.html">Inicio</a></li>
       <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
       <li><a href="index.html#planes">Planes</a></li>
@@ -1197,13 +1203,13 @@ function handleSubmit() {
   }
 
 // Hamburger (mobile)
+const hamburger = document.getElementById('hamburger');
 hamburger.addEventListener('click', () => {
-  document.querySelector('.nav-links').classList.toggle('open');
-  document.getElementById('nav-cta').style.display = 'none';
+  document.getElementById('nav-links-menu').classList.toggle('open');
 });
 document.addEventListener('click', (e) => {
   if (!e.target.closest('nav')) {
-    document.querySelector('.nav-links').classList.remove('open');
+    document.getElementById('nav-links-menu').classList.remove('open');
   }
 });
 </script>
