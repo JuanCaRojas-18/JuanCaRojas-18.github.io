@@ -89,7 +89,7 @@ nav {
   letter-spacing: -0.3px;
 }
 .nav-logo-name em { font-style: italic; color: var(--accent); }
-.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-links { align-items: center; gap: 4px; list-style: none; }
 .nav-links a {
   text-decoration: none;
   color: var(--text2);
@@ -833,18 +833,27 @@ footer {
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
-  #nav-links-menu { display: none !important; }
-  #nav-links-menu.open { display: flex !important; }
   .nav-hamburger { display: flex; }
-  .nav-links { display: none !important; }
-  .nav-links.open { display: flex !important; }
   .nav-cta { display: none !important; }
-  .nav-links a {
+  #nav-links-menu {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    background: var(--bg);
+    padding: 20px 5vw 24px;
+    gap: 10px;
+    z-index: 199;
+    box-shadow: 0 8px 32px rgba(15,17,23,0.15);
+  }
+  #nav-links-menu.open { display: flex; }
+  #nav-links-menu a {
     font-size: 15px;
     padding: 10px 0;
     border-bottom: 1px solid var(--border);
   }
-  .nav-links li:last-child a { border-bottom: none; }
+  #nav-links-menu li:last-child a { border-bottom: none; }
   .page-body { grid-template-columns: 1fr; gap: 40px; }
   .sidebar { position: static !important; width: 100%; max-width: 100%; }
   .more-grid { grid-template-columns: 1fr 1fr; }
