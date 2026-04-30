@@ -1282,11 +1282,11 @@ window.addEventListener('scroll', () => {
 // Hamburger (mobile)
 const hamburger = document.getElementById('hamburger');
 hamburger.addEventListener('click', () => {
-  getElementById('nav-links-menu').classList.toggle('open');
+  document.getElementById('nav-links-menu').classList.toggle('open');
 });
 document.addEventListener('click', (e) => {
   if (!e.target.closest('nav')) {
-    getElementById('nav-links-menu').classList.remove('open');
+    document.getElementById('nav-links-menu').classList.remove('open');
   }
 });
 
