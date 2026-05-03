@@ -943,20 +943,76 @@ footer {
     box-shadow: 0 8px 32px rgba(15,17,23,0.15);
   }
   .nav-links.open { display: flex; }
-  .nav-cta {
-    display: none !important;
-  }
+  .nav-cta { display: none !important; }
   .nav-links a {
     font-size: 15px;
     padding: 10px 0;
     border-bottom: 1px solid var(--border);
   }
   .nav-links li:last-child a { border-bottom: none; }
+
+  /* Hero */
+  .hero { padding: calc(var(--nav-h) + 40px) 5vw 48px; min-height: auto; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { display: none; }
+  .hero-headline { font-size: clamp(32px, 8vw, 48px); }
+  .hero-sub { font-size: 15px; max-width: 100%; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+
+  /* Stats */
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 20px 16px; }
+  .stat-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.08); }
+  .stat-item:nth-last-child(-n+2) { border-bottom: none; }
+  .stat-num { font-size: 32px; }
+
+  /* Features */
+  .features-grid { grid-template-columns: 1fr; gap: 16px; margin-top: 36px; }
+
+  /* How it works */
+  .how-grid { grid-template-columns: 1fr; gap: 36px; }
+  .how-visual { display: none; }
+
+  /* Pricing */
+  .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
+  .plan-card.featured { transform: scale(1); }
+  .plan-card.featured:hover { transform: translateY(-4px); }
+
+  /* Testimonials */
+  .testi-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Contact */
+  .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+  .contact-form { padding: 24px 20px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: span 1; }
+
+  /* Footer */
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
 }
+
 @media (max-width: 600px) {
-  section { padding: 64px 5vw; }
+  section { padding: 56px 5vw; }
+
+  /* Stats — 1 columna */
   .stats-inner { grid-template-columns: 1fr; }
+  .stat-item { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .stat-item:last-child { border-bottom: none; }
+
+  /* Footer — 1 columna */
   .footer-top { grid-template-columns: 1fr; }
+
+  /* Hero */
+  .hero-headline { letter-spacing: -1px; }
+  .hero-badge { font-size: 11px; }
+
+  /* Features */
+  .feat-card { padding: 20px 18px; }
+
+  /* Pricing */
+  .plan-featured-badge { font-size: 10px; }
 }
 </style>
 </head>
