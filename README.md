@@ -140,12 +140,7 @@ bill_zen/
 │   └── assets/
 │       └── fonts/
 │
-└── backend/                 # FastAPI (repositorio del backend — Camilo)
-    ├── main.py
-    ├── routers/
-    ├── models/
-    ├── schemas/
-    └── database.py
+└── backend/                 # Repositorio privado — ver documentación interna
 ```
 
 ---
@@ -155,10 +150,7 @@ bill_zen/
 ### Requisitos previos
 
 - Git
-- Python 3.11+
-- pip
 - Navegador moderno (Chrome, Firefox, Edge)
-- Acceso a la base de datos MySQL en Azure (credenciales proporcionadas por el equipo)
 
 ### Frontend (sitio público e intranet)
 
@@ -176,44 +168,11 @@ python -m http.server 3000
 
 ### Backend
 
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/bill-zen-desarrollo/bill_zen.git
-cd bill_zen/backend
+El backend está desarrollado en Python con FastAPI por Camilo Alarcón.
 
-# 2. Crear entorno virtual
-python -m venv venv
-source venv/bin/activate        # Linux / macOS
-venv\Scripts\activate           # Windows
+Para instrucciones de instalación, configuración y variables de entorno, consultar la documentación interna del equipo.
 
-# 3. Instalar dependencias
-pip install -r requirements.txt
-
-# 4. Configurar variables de entorno
-cp .env.example .env
-# Editar .env con las credenciales de Azure MySQL
-
-# 5. Correr el servidor
-uvicorn main:app --reload --port 8000
-```
-
-La API estará disponible en `http://localhost:8000`.
-Documentación interactiva (Swagger): `http://localhost:8000/docs`
-
-### Variables de entorno requeridas
-
-```env
-DB_HOST=<host Azure MySQL>
-DB_PORT=3306
-DB_NAME=billzen
-DB_USER=<usuario>
-DB_PASSWORD=<contraseña>
-JWT_SECRET=<clave secreta>
-JWT_ALGORITHM=HS256
-JWT_EXPIRATION_MINUTES=60
-```
-
-> Las credenciales reales se comparten de forma segura entre los miembros del equipo. Nunca subir el archivo `.env` al repositorio.
+> Las credenciales y detalles de infraestructura se comparten de forma segura entre los miembros del equipo y no se publican en este repositorio.
 
 ---
 
