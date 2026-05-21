@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Iniciar sesión — Billzen</title>
+<meta name="description" content="Accede a tu cuenta Billzen y gestiona tu contabilidad y facturación electrónica desde cualquier lugar." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg: #f5f3ef;
+  --bg2: #eceae4;
+  --dark: #0f1117;
+  --dark2: #1a1e2a;
+  --surface: #ffffff;
+  --text: #0f1117;
+  --text2: #5a5f72;
+  --text3: #9095a8;
+  --accent: #0a6f52;
+  --accent-light: #d6f0e8;
+  --accent2: #f0a500;
+  --border: rgba(15,17,23,0.08);
+  --border2: rgba(15,17,23,0.14);
+  --shadow: 0 2px 24px rgba(15,17,23,0.07);
+  --shadow-lg: 0 8px 48px rgba(15,17,23,0.12);
+  --r: 14px;
+  --r-sm: 8px;
+  --font: 'Sora', sans-serif;
+  --font-display: 'Fraunces', serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+/* ===== LAYOUT ===== */
+.auth-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ===== LEFT PANEL ===== */
+.auth-left {
+  background: var(--dark2);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 48px;
+}
+
+.auth-left::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse at center, rgba(10,111,82,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.auth-left::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(ellipse at center, rgba(10,111,82,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Logo */
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+}
+.auth-logo-mark {
+  width: 34px; height: 34px;
+  background: var(--accent);
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+}
+.auth-logo-mark svg { width: 18px; height: 18px; }
+.auth-logo-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.auth-logo-name em { font-style: italic; color: #4AE8A4; }
+
+/* Left content */
+.auth-left-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 40px;
+}
+.auth-left-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(74,232,164,0.12);
+  color: #4AE8A4;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  margin-bottom: 28px;
+  width: fit-content;
+}
+.auth-left-tag-dot {
+  width: 6px; height: 6px;
+  background: #4AE8A4;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.auth-left-headline {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.5vw, 46px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -1.2px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+.auth-left-headline em { font-style: italic; color: #4AE8A4; }
+
+.auth-left-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  max-width: 380px;
+  font-weight: 300;
+  margin-bottom: 48px;
+}
+
+/* Feature list */
+.auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.auth-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.auth-feature-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+.auth-feature-text {}
+.auth-feature-title { font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,0.85); margin-bottom: 2px; }
+.auth-feature-desc { font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 300; }
+
+/* Testimonial card */
+.auth-testi {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--r);
+  padding: 22px 24px;
+}
+.auth-testi-text {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  font-style: italic;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.auth-testi-author { display: flex; align-items: center; gap: 10px; }
+.auth-testi-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+.auth-testi-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.8); }
+.auth-testi-role { font-size: 11px; color: rgba(255,255,255,0.35); font-family: var(--font-mono); }
+
+/* Stars */
+.auth-testi-stars { display: flex; gap: 3px; margin-bottom: 12px; }
+.auth-testi-stars span { color: #f0a500; font-size: 13px; }
+
+/* ===== RIGHT PANEL ===== */
+.auth-right {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  position: relative;
+}
+
+.auth-right-top {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  font-size: 13px;
+  color: var(--text3);
+}
+.auth-right-top a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.auth-right-top a:hover { text-decoration: underline; }
+
+.auth-form-wrap {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Tabs */
+.auth-tabs {
+  display: flex;
+  background: var(--bg2);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 36px;
+  gap: 4px;
+}
+.auth-tab {
+  flex: 1;
+  padding: 9px;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 500;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text3);
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+}
+.auth-tab.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+/* Form header */
+.auth-form-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.auth-form-title em { font-style: italic; color: var(--accent); }
+.auth-form-sub {
+  font-size: 14px;
+  color: var(--text3);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+
+/* Form */
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.form-label {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text2);
+  letter-spacing: 0.3px;
+  font-weight: 500;
+}
+.form-input-wrap {
+  position: relative;
+}
+.form-input-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+}
+.form-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--r-sm);
+  padding: 11px 14px 11px 40px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: var(--font);
+  outline: none;
+  transition: all 0.2s;
+}
+.form-input::placeholder { color: var(--text3); }
+.form-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(10,111,82,0.08);
+}
+.form-input.no-icon { padding-left: 14px; }
+
+/* Password toggle */
+.form-input-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.form-input-eye:hover { color: var(--text); }
+.form-input.has-eye { padding-right: 42px; }
+
+/* Checkbox */
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.form-check input {
+  width: 16px; height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  border-radius: 4px;
+}
+.form-check-label {
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 300;
+}
+.form-check-label a { color: var(--accent); text-decoration: none; font-weight: 500; }
+
+/* Forgot */
+.form-forgot {
+  text-align: right;
+  margin-top: -8px;
+}
+.form-forgot a {
+  font-size: 12px;
+  color: var(--text3);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  transition: color 0.15s;
+}
+.form-forgot a:hover { color: var(--accent); }
+
+/* Submit */
+.btn-auth {
+  width: 100%;
+  padding: 13px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm);
+  font-size: 15px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 12px rgba(10,111,82,0.25);
+  margin-top: 4px;
+}
+.btn-auth:hover {
+  background: #085e45;
+  box-shadow: 0 4px 20px rgba(10,111,82,0.35);
+  transform: translateY(-1px);
+}
+.btn-auth:active { transform: translateY(0); }
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+}
+.auth-divider-line { flex: 1; height: 1px; background: var(--border2); }
+.auth-divider-text { font-size: 11px; color: var(--text3); font-family: var(--font-mono); white-space: nowrap; }
+
+/* Social buttons */
+.auth-socials { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.18s;
+  text-decoration: none;
+}
+.btn-social:hover { border-color: var(--border2); background: var(--bg2); color: var(--text); }
+
+/* Error / Success */
+.form-error {
+  font-size: 11px;
+  color: #c94040;
+  font-family: var(--font-mono);
+  margin-top: -4px;
+  display: none;
+}
+.form-group.error .form-input { border-color: #c94040; }
+.form-group.error .form-error { display: block; }
+
+/* Password strength */
+.pw-strength {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+.pw-bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border2);
+  transition: background 0.3s;
+}
+.pw-bar.weak { background: #c94040; }
+.pw-bar.fair { background: var(--accent2); }
+.pw-bar.strong { background: var(--accent); }
+
+/* Panel switcher */
+.auth-panel { display: none; }
+.auth-panel.active { display: block; }
+
+/* Footer note */
+.auth-footer-note {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 11.5px;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+.auth-footer-note a { color: var(--accent); text-decoration: none; }
+
+/* Back link */
+.auth-back {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text3);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.auth-back:hover { color: var(--text); }
+.auth-back svg { width: 14px; height: 14px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .auth-layout { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .auth-right { padding: 80px 24px 48px; }
+}
+@media (max-width: 480px) {
+  .auth-form-wrap { max-width: 100%; }
+  .form-row { grid-template-columns: 1fr; }
+  .auth-socials { grid-template-columns: 1fr; }
+}
+
+/* Fade-in animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.auth-form-wrap { animation: fadeUp 0.5s ease both; }
+</style>
+</head>
+<body>
+
+<div class="auth-layout">
+
+  <!-- ===== LEFT PANEL ===== -->
+  <div class="auth-left">
+    <a href="index.html" class="auth-logo">
+      <div class="auth-logo-mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <rect x="2" y="2" width="6" height="6" rx="1.5" fill="white"/>
+          <rect x="10" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
+          <rect x="2" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
+          <rect x="10" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.3"/>
+        </svg>
+      </div>
+      <span class="auth-logo-name">Bill<em>zen</em></span>
+    </a>
+
+    <div class="auth-left-content">
+      <div class="auth-left-tag">
+        <div class="auth-left-tag-dot"></div>
+        Certificado DIAN &bull; Facturación Electrónica
+      </div>
+
+      <h1 class="auth-left-headline">
+        Controla tu empresa<br/>desde <em>un solo</em><br/>lugar
+      </h1>
+      <p class="auth-left-sub">
+        Factura, contabiliza y analiza tus finanzas en tiempo real. Billzen está diseñado para MiPyMEs colombianas que quieren crecer sin complicaciones.
+      </p>
+
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature-icon">📄</div>
+          <div class="auth-feature-text">
+            <div class="auth-feature-title">Facturación electrónica DIAN</div>
+            <div class="auth-feature-desc">Emite facturas válidas en segundos, directamente a la DIAN</div>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">📊</div>
+          <div class="auth-feature-text">
+            <div class="auth-feature-title">Dashboard financiero en tiempo real</div>
+            <div class="auth-feature-desc">Ingresos, gastos y flujo de caja siempre actualizados</div>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🔒</div>
+          <div class="auth-feature-text">
+            <div class="auth-feature-title">Seguridad y privacidad</div>
+            <div class="auth-feature-desc">Datos cifrados y backups automáticos en la nube</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-testi">
+        <div class="auth-testi-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="auth-testi-text">"Billzen transformó la manera en que manejamos la contabilidad. Ahora facturamos en segundos y tenemos visibilidad total de nuestras finanzas."</p>
+        <div class="auth-testi-author">
+          <div class="auth-testi-avatar">JR</div>
+          <div>
+            <div class="auth-testi-name">Juan Rodríguez</div>
+            <div class="auth-testi-role">CEO, Comercial López S.A.S</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RIGHT PANEL ===== -->
+  <div class="auth-right">
+
+    <a href="index.html" class="auth-back" id="backLink">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 2L4 7l5 5"/>
+      </svg>
+      Volver al inicio
+    </a>
+
+    <div class="auth-form-wrap">
+
+      <!-- Tabs -->
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab active" id="tab-login" role="tab" onclick="switchTab('login')" aria-selected="true">
+          Iniciar sesión
+        </button>
+        <button class="auth-tab" id="tab-register" role="tab" onclick="switchTab('register')" aria-selected="false">
+          Crear cuenta
+        </button>
+      </div>
+
+      <!-- ===== LOGIN PANEL ===== -->
+      <div class="auth-panel active" id="panel-login">
+        <h2 class="auth-form-title">Bienvenido de <em>vuelta</em></h2>
+        <p class="auth-form-sub">Accede a tu cuenta para continuar gestionando tu empresa.</p>
+
+        <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)" novalidate>
+
+          <div class="auth-socials">
+            <button type="button" class="btn-social" onclick="socialLogin('google')">
+              <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+              Google
+            </button>
+            <button type="button" class="btn-social" onclick="socialLogin('microsoft')">
+              <svg width="16" height="16" viewBox="0 0 21 21"><rect width="10" height="10" fill="#f25022"/><rect x="11" width="10" height="10" fill="#7fba00"/><rect y="11" width="10" height="10" fill="#00a4ef"/><rect x="11" y="11" width="10" height="10" fill="#ffb900"/></svg>
+              Microsoft
+            </button>
+          </div>
+
+          <div class="auth-divider">
+            <div class="auth-divider-line"></div>
+            <span class="auth-divider-text">O continúa con email</span>
+            <div class="auth-divider-line"></div>
+          </div>
+
+          <div class="form-group" id="login-email-group">
+            <label class="form-label" for="login-email">Correo electrónico</label>
+            <div class="form-input-wrap">
+              <span class="form-input-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </span>
+              <input type="email" id="login-email" class="form-input" placeholder="nombre@empresa.com" autocomplete="email" required />
+            </div>
+            <span class="form-error" id="login-email-err">Ingresa un correo válido</span>
+          </div>
+
+          <div class="form-group" id="login-pw-group">
+            <label class="form-label" for="login-pw">Contraseña</label>
+            <div class="form-input-wrap">
+              <span class="form-input-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input type="password" id="login-pw" class="form-input has-eye" placeholder="••••••••" autocomplete="current-password" required />
+              <button type="button" class="form-input-eye" onclick="togglePw('login-pw', this)" aria-label="Mostrar contraseña">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <span class="form-error" id="login-pw-err">Ingresa tu contraseña</span>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <label class="form-check">
+              <input type="checkbox" id="remember" />
+              <span class="form-check-label">Recordarme</span>
+            </label>
+            <div class="form-forgot">
+              <a href="#" onclick="forgotPassword(event)">¿Olvidaste tu contraseña?</a>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-auth" id="login-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            Iniciar sesión
+          </button>
+
+        </form>
+
+        <div class="auth-footer-note">
+          ¿No tienes cuenta? <a href="#" onclick="switchTab('register');return false;">Crea una gratis</a>
+        </div>
+      </div>
+
+      <!-- ===== REGISTER PANEL ===== -->
+      <div class="auth-panel" id="panel-register">
+        <h2 class="auth-form-title"><em>Crea</em> tu cuenta</h2>
+        <p class="auth-form-sub">14 días gratis, sin tarjeta de crédito. Cancela cuando quieras.</p>
+
+        <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)" novalidate>
+
+          <div class="auth-socials">
+            <button type="button" class="btn-social" onclick="socialLogin('google')">
+              <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+              Google
+            </button>
+            <button type="button" class="btn-social" onclick="socialLogin('microsoft')">
+              <svg width="16" height="16" viewBox="0 0 21 21"><rect width="10" height="10" fill="#f25022"/><rect x="11" width="10" height="10" fill="#7fba00"/><rect y="11" width="10" height="10" fill="#00a4ef"/><rect x="11" y="11" width="10" height="10" fill="#ffb900"/></svg>
+              Microsoft
+            </button>
+          </div>
+
+          <div class="auth-divider">
+            <div class="auth-divider-line"></div>
+            <span class="auth-divider-text">O regístrate con email</span>
+            <div class="auth-divider-line"></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" id="reg-fname-group">
+              <label class="form-label" for="reg-fname">Nombre</label>
+              <div class="form-input-wrap">
+                <input type="text" id="reg-fname" class="form-input no-icon" placeholder="Juan" autocomplete="given-name" required />
+              </div>
+              <span class="form-error" id="reg-fname-err">Campo requerido</span>
+            </div>
+            <div class="form-group" id="reg-lname-group">
+              <label class="form-label" for="reg-lname">Apellido</label>
+              <div class="form-input-wrap">
+                <input type="text" id="reg-lname" class="form-input no-icon" placeholder="Rodríguez" autocomplete="family-name" required />
+              </div>
+              <span class="form-error" id="reg-lname-err">Campo requerido</span>
+            </div>
+          </div>
+
+          <div class="form-group" id="reg-company-group">
+            <label class="form-label" for="reg-company">Empresa</label>
+            <div class="form-input-wrap">
+              <span class="form-input-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </span>
+              <input type="text" id="reg-company" class="form-input" placeholder="Nombre de tu empresa" autocomplete="organization" />
+            </div>
+          </div>
+
+          <div class="form-group" id="reg-email-group">
+            <label class="form-label" for="reg-email">Correo electrónico</label>
+            <div class="form-input-wrap">
+              <span class="form-input-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </span>
+              <input type="email" id="reg-email" class="form-input" placeholder="nombre@empresa.com" autocomplete="email" required />
+            </div>
+            <span class="form-error" id="reg-email-err">Ingresa un correo válido</span>
+          </div>
+
+          <div class="form-group" id="reg-pw-group">
+            <label class="form-label" for="reg-pw">Contraseña</label>
+            <div class="form-input-wrap">
+              <span class="form-input-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input type="password" id="reg-pw" class="form-input has-eye" placeholder="Mínimo 8 caracteres" autocomplete="new-password" oninput="checkStrength(this.value)" required />
+              <button type="button" class="form-input-eye" onclick="togglePw('reg-pw', this)" aria-label="Mostrar contraseña">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="pw-strength" id="pw-strength">
+              <div class="pw-bar" id="pw-bar-1"></div>
+              <div class="pw-bar" id="pw-bar-2"></div>
+              <div class="pw-bar" id="pw-bar-3"></div>
+              <div class="pw-bar" id="pw-bar-4"></div>
+            </div>
+            <span class="form-error" id="reg-pw-err">Mínimo 8 caracteres</span>
+          </div>
+
+          <label class="form-check">
+            <input type="checkbox" id="reg-terms" required />
+            <span class="form-check-label">Acepto los <a href="#">términos de uso</a> y la <a href="#">política de privacidad</a></span>
+          </label>
+
+          <button type="submit" class="btn-auth" id="register-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+            Crear cuenta gratis
+          </button>
+
+        </form>
+
+        <div class="auth-footer-note">
+          ¿Ya tienes cuenta? <a href="#" onclick="switchTab('login');return false;">Inicia sesión</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab switching
+  function switchTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('tab-' + tab).setAttribute('aria-selected', 'true');
+    document.getElementById('panel-' + tab).classList.add('active');
+
+    // Re-trigger animation
+    const wrap = document.querySelector('.auth-form-wrap');
+    wrap.style.animation = 'none';
+    wrap.offsetHeight;
+    wrap.style.animation = 'fadeUp 0.35s ease both';
+  }
+
+  // Password visibility toggle
+  function togglePw(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const isText = input.type === 'text';
+    input.type = isText ? 'password' : 'text';
+    btn.style.opacity = isText ? '1' : '0.5';
+  }
+
+  // Password strength
+  function checkStrength(val) {
+    const bars = [
+      document.getElementById('pw-bar-1'),
+      document.getElementById('pw-bar-2'),
+      document.getElementById('pw-bar-3'),
+      document.getElementById('pw-bar-4'),
+    ];
+    bars.forEach(b => { b.className = 'pw-bar'; });
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    const cls = score <= 1 ? 'weak' : score <= 2 ? 'fair' : 'strong';
+    for (let i = 0; i < score; i++) bars[i].classList.add(cls);
+  }
+
+  // Login handler
+  function handleLogin(e) {
+    e.preventDefault();
+    let valid = true;
+
+    const email = document.getElementById('login-email');
+    const pw = document.getElementById('login-pw');
+    const emailGroup = document.getElementById('login-email-group');
+    const pwGroup = document.getElementById('login-pw-group');
+
+    emailGroup.classList.remove('error');
+    pwGroup.classList.remove('error');
+
+    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+      emailGroup.classList.add('error');
+      valid = false;
+    }
+    if (!pw.value) {
+      pwGroup.classList.add('error');
+      valid = false;
+    }
+
+    if (valid) {
+      const btn = document.getElementById('login-btn');
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Verificando...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = '✓ Acceso concedido';
+        btn.style.background = '#059669';
+      }, 1500);
+    }
+  }
+
+  // Register handler
+  function handleRegister(e) {
+    e.preventDefault();
+    let valid = true;
+
+    const fname = document.getElementById('reg-fname');
+    const lname = document.getElementById('reg-lname');
+    const email = document.getElementById('reg-email');
+    const pw = document.getElementById('reg-pw');
+    const terms = document.getElementById('reg-terms');
+
+    ['reg-fname-group','reg-lname-group','reg-email-group','reg-pw-group'].forEach(id => {
+      document.getElementById(id).classList.remove('error');
+    });
+
+    if (!fname.value.trim()) { document.getElementById('reg-fname-group').classList.add('error'); valid = false; }
+    if (!lname.value.trim()) { document.getElementById('reg-lname-group').classList.add('error'); valid = false; }
+    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) { document.getElementById('reg-email-group').classList.add('error'); valid = false; }
+    if (!pw.value || pw.value.length < 8) { document.getElementById('reg-pw-group').classList.add('error'); valid = false; }
+    if (!terms.checked) { valid = false; alert('Debes aceptar los términos de uso.'); }
+
+    if (valid) {
+      const btn = document.getElementById('register-btn');
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Creando cuenta...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = '✓ ¡Cuenta creada!';
+        btn.style.background = '#059669';
+      }, 1800);
+    }
+  }
+
+  // Social login placeholder
+  function socialLogin(provider) {
+    alert('Integración con ' + provider + ' próximamente disponible.');
+  }
+
+  // Forgot password placeholder
+  function forgotPassword(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    if (email) {
+      alert('Se enviará un enlace de recuperación a: ' + email);
+    } else {
+      alert('Por favor ingresa tu correo electrónico primero.');
+      document.getElementById('login-email').focus();
+    }
+  }
+</script>
+
+</body>
+</html>
