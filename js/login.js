@@ -1,3 +1,9 @@
+// ==========================================
+// CONFIGURACIÓN DE RED (Fase 2)
+// Cambiar a la URL de Ngrok cuando hagan pruebas remotas
+// ==========================================
+const API_BASE_URL = 'http://localhost:8000'; 
+
 /* ---- Tab switching ---- */
 function switchTab(tab) {
   ['login','register'].forEach(t => {
@@ -5,15 +11,12 @@ function switchTab(tab) {
     document.getElementById('tab-' + t).setAttribute('aria-selected', t === tab);
     document.getElementById('panel-' + t).classList.toggle('active', t === tab);
   });
-  // Update top hint
   const hint = document.getElementById('switch-hint');
-  const link = document.getElementById('switch-link');
   if (tab === 'login') {
     hint.innerHTML = '¿No tienes cuenta? <a href="#" onclick="switchTab(\'register\');return false;" id="switch-link">Regístrate gratis</a>';
   } else {
     hint.innerHTML = '¿Ya tienes cuenta? <a href="#" onclick="switchTab(\'login\');return false;" id="switch-link">Inicia sesión</a>';
   }
-  // Re-trigger animation
   const card = document.getElementById('auth-card');
   card.style.animation = 'none';
   card.offsetHeight;
@@ -42,72 +45,98 @@ function updateStrength(val) {
   });
 }
 
-/* ---- Login submit ---- */
-function handleLogin(e) {
+// ==========================================
+// INTEGRACIÓN CON BACKEND: LOGIN
+// ==========================================
+async function handleLogin(e) {
   e.preventDefault();
   let ok = true;
-  const email = document.getElementById('lg-email');
-  const pw = document.getElementById('lg-pw');
+  
+  // Usamos lg-email porque así está en el HTML, pero representará el NIT
+  const nitInput = document.getElementById('lg-email');
+  const pwInput = document.getElementById('lg-pw');
+  const btn = document.getElementById('lg-btn');
 
   clearErr('lg-email-grp'); clearErr('lg-pw-grp');
-  if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) { setErr('lg-email-grp'); ok = false; }
-  if (!pw.value) { setErr('lg-pw-grp'); ok = false; }
+  
+  // Validación básica de campos vacíos
+  if (!nitInput.value.trim()) { setErr('lg-email-grp'); ok = false; }
+  if (!pwInput.value) { setErr('lg-pw-grp'); ok = false; }
 
   if (ok) {
-    const btn = document.getElementById('lg-btn');
+    // 1. Estado de carga en el botón
+    const originalBtnText = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '<div class="spinner"></div> Verificando...';
-    setTimeout(() => {
-      btn.style.background = '#059669';
-      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Acceso concedido';
-    }, 1600);
+    btn.innerHTML = '<div class="spinner"></div> Conectando...';
+
+    try {
+      // 2. Petición HTTP asíncrona al Backend
+      const response = await fetch(`${API_BASE_URL}/login/empresa`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nit: nitInput.value.trim(),
+          password: pwInput.value
+        })
+      });
+
+      // 3. Manejo de la respuesta
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Éxito visual
+        btn.style.background = '#059669';
+        btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Acceso concedido';
+        
+        // Redirección al Dashboard (INTRANET) tras 1 segundo
+        setTimeout(() => {
+          window.location.href = 'INTRANET/index.html'; 
+        }, 1000);
+
+      } else {
+        // Manejo de errores HTTP (ej: 401 Unauthorized, 404 Not Found)
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'Credenciales incorrectas');
+      }
+
+    } catch (error) {
+      // 4. Captura de errores de red o credenciales inválidas
+      console.error('Error de autenticación:', error);
+      alert(`Error al iniciar sesión: ${error.message}. Verifica que el servidor de FastAPI esté encendido y las credenciales sean correctas.`);
+      
+      // Restaurar estado del botón
+      btn.disabled = false;
+      btn.style.background = 'var(--accent)';
+      btn.innerHTML = originalBtnText;
+      setErr('lg-email-grp'); 
+      setErr('lg-pw-grp');
+    }
   }
 }
 
-/* ---- Register submit ---- */
-function handleRegister(e) {
-  e.preventDefault();
-  let ok = true;
-  const fn = document.getElementById('rg-fn');
-  const ln = document.getElementById('rg-ln');
-  const em = document.getElementById('rg-em');
-  const pw = document.getElementById('rg-pw');
-  const terms = document.getElementById('rg-terms');
-
-  ['rg-fn-grp','rg-ln-grp','rg-em-grp','rg-pw-grp'].forEach(clearErr);
-  if (!fn.value.trim()) { setErr('rg-fn-grp'); ok = false; }
-  if (!ln.value.trim()) { setErr('rg-ln-grp'); ok = false; }
-  if (!em.value || !/\S+@\S+\.\S+/.test(em.value)) { setErr('rg-em-grp'); ok = false; }
-  if (!pw.value || pw.value.length < 8) { setErr('rg-pw-grp'); ok = false; }
-  if (!terms.checked) { alert('Debes aceptar los términos de uso para continuar.'); ok = false; }
-
-  if (ok) {
-    const btn = document.getElementById('rg-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<div class="spinner"></div> Creando cuenta...';
-    setTimeout(() => {
-      btn.style.background = '#059669';
-      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ¡Cuenta creada!';
-    }, 1900);
-  }
-}
-
+/* ---- Manejadores de interfaz adicionales ---- */
 function setErr(grpId) { document.getElementById(grpId).classList.add('has-err'); }
 function clearErr(grpId) { document.getElementById(grpId).classList.remove('has-err'); }
 
-/* ---- Social auth ---- */
 function socialAuth(provider) {
   alert('Integración con ' + provider + ' estará disponible próximamente.');
 }
 
-/* ---- Forgot password ---- */
 function forgotPw(e) {
   e.preventDefault();
   const val = document.getElementById('lg-email').value.trim();
-  if (val && /\S+@\S+\.\S+/.test(val)) {
-    alert('Se enviará un enlace de recuperación a: ' + val);
+  if (val) {
+    alert('Se enviará un enlace de recuperación para el NIT/Correo: ' + val);
   } else {
     document.getElementById('lg-email').focus();
-    alert('Ingresa tu correo electrónico primero.');
+    alert('Ingresa tu NIT/Correo primero.');
   }
+}
+
+// Simulador de registro (Aún sin endpoint documentado)
+function handleRegister(e) {
+  e.preventDefault();
+  alert("El endpoint de registro aún no está definido en la Guía de Integración.");
 }
