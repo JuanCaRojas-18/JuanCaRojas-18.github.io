@@ -92,7 +92,7 @@ async function handleLogin(e) {
         
         // Redirección al Dashboard (INTRANET) tras 1 segundo
         setTimeout(() => {
-          window.location.href = 'INTRANET/index.html'; 
+          window.location.href = 'Intranet_cliente/index.html'; 
         }, 1000);
 
       } else {
