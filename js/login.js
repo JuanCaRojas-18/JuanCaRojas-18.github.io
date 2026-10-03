@@ -2,7 +2,7 @@
 // CONFIGURACIÓN DE RED (Fase 2)
 // Cambiar a la URL de Ngrok cuando hagan pruebas remotas
 // ==========================================
-const API_BASE_URL = 'http://localhost:8000'; 
+const API_BASE_URL = 'http://172.28.16.1:8000'; 
 
 /* ---- Tab switching ---- */
 function switchTab(tab) {
