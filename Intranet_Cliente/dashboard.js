@@ -1,31 +1,88 @@
 /**
- * BillZen Admin Dashboard — dashboard.js
- * Maneja: autenticación empresa + admin, y CRUD completo de inventario
- * Base URL: http://localhost:8000
+ * BillZen Dashboard — dashboard.js
+ * El usuario ya se autenticó como empresa en login.html.
+ * Aquí se restaura la sesión y se carga el inventario directamente.
+ *
+ * Servidor: http://172.20.10.8:8000
  */
 
-const API = 'http://0.0.0.0:8000';
+// ─── Configuración ───────────────────────────────────────────────
+const API = 'http://172.20.10.8:8000';
 
 // ─── Estado global ───────────────────────────────────────────────
 const state = {
-  empresaNit: '',
-  empresaToken: null,      // token o datos de sesión retornados por /login/empresa
-  adminToken: null,        // token retornado por /login/admin (si existe)
-  productos: [],           // catálogo cargado
+  nit:    '',
+  token:  null,
+  nombre: '',
+  productos: [],
   filteredProductos: [],
-  editingProductoId: null, // para acciones de modal (precio / ingreso / delete)
+  editingId: null,
 };
 
-// ─── Helpers de UI ───────────────────────────────────────────────
+// ─── Inicialización: restaurar sesión desde sessionStorage ────────
+(function init() {
+  const nit    = sessionStorage.getItem('bz_empresa_nit');
+  const token  = sessionStorage.getItem('bz_empresa_token');
+  const nombre = sessionStorage.getItem('bz_empresa_nombre');
 
-/** Muestra / oculta un modal */
+  if (!nit) {
+    // Sin sesión → redirigir al login
+    window.location.href = '../login.html';
+    return;
+  }
+
+  state.nit    = nit;
+  state.token  = token || null;
+  state.nombre = nombre || `NIT ${nit}`;
+
+  // Actualizar UI con datos de la empresa
+  const initiales = nit.substring(0, 2).toUpperCase();
+  document.getElementById('sidebar-avatar').textContent   = initiales;
+  document.getElementById('sidebar-username').textContent = state.nombre;
+  document.getElementById('sidebar-userrole').textContent = `NIT ${nit}`;
+  document.getElementById('topbar-nit').textContent       = `NIT ${nit}`;
+
+  // Cargar catálogo de inmediato
+  cargarProductos();
+})();
+
+// ─── Headers de autenticación ────────────────────────────────────
+function authHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+  if (state.token) h['Authorization'] = `Bearer ${state.token}`;
+  return h;
+}
+
+// ─── Logout ──────────────────────────────────────────────────────
+document.getElementById('btn-logout').addEventListener('click', () => {
+  sessionStorage.removeItem('bz_empresa_nit');
+  sessionStorage.removeItem('bz_empresa_token');
+  sessionStorage.removeItem('bz_empresa_nombre');
+  window.location.href = '../login.html';
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// HELPERS DE UI
+// ═══════════════════════════════════════════════════════════════════
+
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-/** Cierra modales al hacer clic en botones data-close */
-document.querySelectorAll('[data-close]').forEach(btn => {
-  btn.addEventListener('click', () => closeModal(btn.dataset.close));
+// Cerrar con botón data-close
+document.querySelectorAll('[data-close]').forEach(btn =>
+  btn.addEventListener('click', () => closeModal(btn.dataset.close))
+);
+// Cerrar con Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape')
+    document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
 });
+// Cerrar al clic en backdrop
+document.querySelectorAll('.modal-backdrop').forEach(backdrop =>
+  backdrop.addEventListener('click', e => {
+    if (e.target === backdrop) backdrop.classList.remove('open');
+  })
+);
 
 /** Toast notifications */
 function showToast(msg, type = 'success') {
@@ -42,6 +99,24 @@ function showToast(msg, type = 'success') {
   setTimeout(() => el.remove(), 3800);
 }
 
+/** Botón con estado de carga */
+function setLoading(btn, yes) {
+  btn.disabled = yes;
+  yes ? btn.classList.add('loading') : btn.classList.remove('loading');
+}
+
+/** Mostrar/limpiar error en modal */
+function showModalError(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+function clearModalError(id) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = ''; el.classList.remove('visible'); }
+}
+
 /** Formatea precio COP */
 function formatCOP(val) {
   const n = parseFloat(val);
@@ -51,228 +126,58 @@ function formatCOP(val) {
   return '$' + n.toFixed(0);
 }
 
-/** Pill de stock según cantidad */
+/** Pill de stock */
 function stockPill(stock) {
-  if (stock === 0)  return `<span class="stock-pill out">&#9679; Sin stock</span>`;
-  if (stock < 10)   return `<span class="stock-pill low">&#9651; ${stock}</span>`;
+  if (stock === 0) return `<span class="stock-pill out">&#9679; Sin stock</span>`;
+  if (stock < 10)  return `<span class="stock-pill low">&#9651; ${stock}</span>`;
   return `<span class="stock-pill ok">&#9679; ${stock}</span>`;
 }
 
-/** Botón con loading */
-function setLoading(btn, yes) {
-  if (yes) {
-    btn.disabled = true;
-    btn.classList.add('loading');
-  } else {
-    btn.disabled = false;
-    btn.classList.remove('loading');
-  }
-}
-
-/** Mostrar error en auth screen */
-function showAuthError(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.classList.add('visible');
-}
-function clearAuthError(id) {
-  const el = document.getElementById(id);
-  el.textContent = '';
-  el.classList.remove('visible');
-}
-
-/** Mostrar error en modal */
-function showModalError(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.classList.add('visible');
-}
-function clearModalError(id) {
-  const el = document.getElementById(id);
-  if (el) { el.textContent = ''; el.classList.remove('visible'); }
-}
-
-// ─── Headers con token ────────────────────────────────────────────
-function authHeaders() {
-  const h = { 'Content-Type': 'application/json' };
-  const token = state.adminToken || state.empresaToken;
-  if (token) h['Authorization'] = `Bearer ${token}`;
-  return h;
-}
-
 // ═══════════════════════════════════════════════════════════════════
-// 1. AUTENTICACIÓN
+// INVENTARIO — CRUD
 // ═══════════════════════════════════════════════════════════════════
 
-// ── 1.1 Login Empresa ────────────────────────────────────────────
-document.getElementById('btn-empresa-login').addEventListener('click', loginEmpresa);
-document.getElementById('empresa-pass').addEventListener('keydown', e => { if (e.key === 'Enter') loginEmpresa(); });
-document.getElementById('empresa-nit').addEventListener('keydown', e => { if (e.key === 'Enter') loginEmpresa(); });
-
-async function loginEmpresa() {
-  clearAuthError('empresa-error');
-  const nit      = document.getElementById('empresa-nit').value.trim();
-  const password = document.getElementById('empresa-pass').value;
-  if (!nit || !password) {
-    showAuthError('empresa-error', 'Por favor completa todos los campos.');
-    return;
-  }
-
-  const btn = document.getElementById('btn-empresa-login');
-  setLoading(btn, true);
-
-  try {
-    const res = await fetch(`${API}/login/empresa`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nit, password }),
-    });
-
-    const data = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      showAuthError('empresa-error', data.detail || data.mensaje || `Error ${res.status}: credenciales inválidas.`);
-      return;
-    }
-
-    // Guardar datos de empresa
-    state.empresaNit   = nit;
-    state.empresaToken = data.token || data.access_token || null;
-
-    // Pasar a pantalla de admin
-    document.getElementById('screen-empresa').classList.add('hidden');
-    document.getElementById('screen-admin').classList.remove('hidden');
-    document.getElementById('admin-empresa-label').textContent = data.nombre_empresa || `NIT ${nit}`;
-
-  } catch (err) {
-    showAuthError('empresa-error', 'No se pudo conectar con el servidor. Verifica que la API esté activa.');
-  } finally {
-    setLoading(btn, false);
-  }
-}
-
-// ── 1.2 Volver desde admin ────────────────────────────────────────
-document.getElementById('btn-back-empresa').addEventListener('click', () => {
-  document.getElementById('screen-admin').classList.add('hidden');
-  document.getElementById('screen-empresa').classList.remove('hidden');
-  clearAuthError('admin-error');
-});
-
-// ── 1.3 Login Admin ───────────────────────────────────────────────
-document.getElementById('btn-admin-login').addEventListener('click', loginAdmin);
-document.getElementById('admin-pass').addEventListener('keydown', e => { if (e.key === 'Enter') loginAdmin(); });
-document.getElementById('admin-user').addEventListener('keydown', e => { if (e.key === 'Enter') loginAdmin(); });
-
-async function loginAdmin() {
-  clearAuthError('admin-error');
-  const usuario  = document.getElementById('admin-user').value.trim();
-  const password = document.getElementById('admin-pass').value;
-  if (!usuario || !password) {
-    showAuthError('admin-error', 'Por favor completa todos los campos.');
-    return;
-  }
-
-  const btn = document.getElementById('btn-admin-login');
-  setLoading(btn, true);
-
-  try {
-    const res = await fetch(`${API}/login/admin`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usuario, password }),
-    });
-
-    const data = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      showAuthError('admin-error', data.detail || data.mensaje || `Error ${res.status}: credenciales inválidas.`);
-      return;
-    }
-
-    // Guardar token de admin
-    state.adminToken = data.token || data.access_token || null;
-
-    // Actualizar UI del sidebar
-    const initiales = usuario.substring(0, 2).toUpperCase();
-    document.getElementById('sidebar-avatar').textContent   = initiales;
-    document.getElementById('sidebar-username').textContent = usuario;
-    document.getElementById('topbar-nit').textContent       = `NIT ${state.empresaNit}`;
-
-    // Ocultar pantallas de auth y mostrar dashboard
-    document.getElementById('screen-admin').classList.add('hidden');
-    document.getElementById('dashboard').classList.add('visible');
-
-    // Cargar catálogo
-    cargarProductos();
-
-  } catch (err) {
-    showAuthError('admin-error', 'No se pudo conectar con el servidor. Verifica que la API esté activa.');
-  } finally {
-    setLoading(btn, false);
-  }
-}
-
-// ── 1.4 Logout ────────────────────────────────────────────────────
-document.getElementById('btn-logout').addEventListener('click', () => {
-  state.empresaNit   = '';
-  state.empresaToken = null;
-  state.adminToken   = null;
-  state.productos    = [];
-
-  document.getElementById('dashboard').classList.remove('visible');
-  document.getElementById('screen-admin').classList.add('hidden');
-  document.getElementById('screen-empresa').classList.remove('hidden');
-
-  // Limpiar campos
-  document.getElementById('empresa-nit').value  = '';
-  document.getElementById('empresa-pass').value = '';
-  document.getElementById('admin-user').value   = '';
-  document.getElementById('admin-pass').value   = '';
-
-  showToast('Sesión cerrada correctamente.', 'warn');
-});
-
-// ═══════════════════════════════════════════════════════════════════
-// 2. INVENTARIO
-// ═══════════════════════════════════════════════════════════════════
-
-// ── 2.1 GET /productos/ — Cargar catálogo ─────────────────────────
+// ── GET /productos/ ───────────────────────────────────────────────
 async function cargarProductos() {
   renderLoadingRows();
   try {
-    const res  = await fetch(`${API}/productos/`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`${res.status}`);
+    const res = await fetch(`${API}/productos/`, { headers: authHeaders() });
+    if (!res.ok) throw new Error(`Error ${res.status}`);
     const data = await res.json();
     state.productos = Array.isArray(data) ? data : [];
     filtrarYRenderizar();
     actualizarKPIs();
   } catch (err) {
+    console.error('[cargarProductos]', err);
+    const isNetwork = err instanceof TypeError;
     document.getElementById('products-tbody').innerHTML = `
       <tr><td colspan="7">
         <div class="empty-state">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5c6585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <p>Error al cargar productos. <strong style="color:var(--accent);cursor:pointer;" onclick="cargarProductos()">Reintentar</strong></p>
+          <p>${isNetwork ? `No se puede alcanzar el servidor (${API})` : `Error: ${err.message}`}.<br>
+          <strong style="color:var(--accent);cursor:pointer;" onclick="cargarProductos()">Reintentar</strong></p>
         </div>
       </td></tr>`;
-    showToast(`Error al cargar catálogo: ${err.message}`, 'error');
+    showToast(isNetwork ? 'Sin conexión con el servidor.' : `Error: ${err.message}`, 'error');
   }
 }
 
 function renderLoadingRows() {
-  const tbody = document.getElementById('products-tbody');
-  tbody.innerHTML = Array.from({ length: 5 }).map(() => `
-    <tr>
-      ${Array.from({ length: 7 }).map(() => `<td><div class="skeleton" style="width:${60+Math.random()*40}%;"></div></td>`).join('')}
+  document.getElementById('products-tbody').innerHTML =
+    Array.from({ length: 5 }).map(() => `<tr>
+      ${Array.from({ length: 7 }).map(() =>
+        `<td><div class="skeleton" style="width:${55 + Math.random() * 40}%;"></div></td>`
+      ).join('')}
     </tr>`).join('');
 }
 
 function filtrarYRenderizar() {
-  const q = document.getElementById('search-input').value.toLowerCase();
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
   state.filteredProductos = q
     ? state.productos.filter(p =>
-        (p.descripcion || '').toLowerCase().includes(q) ||
+        (p.descripcion   || '').toLowerCase().includes(q) ||
         (p.codigo_barras || '').toLowerCase().includes(q) ||
-        (p.categoria || '').toLowerCase().includes(q)
+        (p.categoria     || '').toLowerCase().includes(q)
       )
     : [...state.productos];
   renderTabla();
@@ -283,14 +188,14 @@ function renderTabla() {
   const lista = state.filteredProductos;
 
   document.getElementById('table-count-label').textContent =
-    `${lista.length} producto${lista.length !== 1 ? 's' : ''} encontrado${lista.length !== 1 ? 's' : ''}`;
+    `${lista.length} producto${lista.length !== 1 ? 's' : ''} en catálogo`;
 
   if (!lista.length) {
     tbody.innerHTML = `
       <tr><td colspan="7">
         <div class="empty-state">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5c6585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-          <p>No se encontraron productos. <strong style="color:var(--accent);cursor:pointer;" onclick="document.getElementById('btn-nuevo-producto').click()">Crear el primero</strong></p>
+          <p>No hay productos. <strong style="color:var(--accent);cursor:pointer;" onclick="document.getElementById('btn-nuevo-producto').click()">Crear el primero</strong></p>
         </div>
       </td></tr>`;
     return;
@@ -306,13 +211,13 @@ function renderTabla() {
       <td><span class="cat-pill">${p.categoria || '—'}</span></td>
       <td>
         <div class="row-actions">
-          <button class="icon-btn warn" title="Actualizar precio" onclick="abrirModalPrecio(${p.id_producto})">
+          <button class="icon-btn icon-warn"  title="Actualizar precio"   onclick="abrirModalPrecio(${p.id_producto})">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </button>
-          <button class="icon-btn" title="Ingresar mercancía" onclick="abrirModalIngreso(${p.id_producto})" style="--accent:#3b82f6">
+          <button class="icon-btn icon-blue"  title="Ingresar stock"      onclick="abrirModalIngreso(${p.id_producto})">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
           </button>
-          <button class="icon-btn danger" title="Eliminar producto" onclick="abrirConfirmDelete(${p.id_producto})">
+          <button class="icon-btn danger"      title="Eliminar producto"   onclick="abrirConfirmDelete(${p.id_producto})">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
           </button>
         </div>
@@ -322,31 +227,26 @@ function renderTabla() {
 
 function actualizarKPIs() {
   const ps = state.productos;
-  document.getElementById('kpi-total').textContent  = ps.length;
+  document.getElementById('kpi-total').textContent = ps.length;
   const totalStock = ps.reduce((s, p) => s + (p.stock ?? 0), 0);
-  document.getElementById('kpi-stock').textContent  = totalStock.toLocaleString('es-CO');
-  const lowStock   = ps.filter(p => (p.stock ?? 0) < 10).length;
-  document.getElementById('kpi-low').textContent    = lowStock;
-  const valor      = ps.reduce((s, p) => s + ((p.precio ?? 0) * (p.stock ?? 0)), 0);
-  document.getElementById('kpi-valor').textContent  = formatCOP(valor);
+  document.getElementById('kpi-stock').textContent = totalStock.toLocaleString('es-CO');
+  const low = ps.filter(p => (p.stock ?? 0) < 10).length;
+  document.getElementById('kpi-low').textContent   = low;
+  const valor = ps.reduce((s, p) => s + (p.precio ?? 0) * (p.stock ?? 0), 0);
+  document.getElementById('kpi-valor').textContent = formatCOP(valor);
 }
 
-// Búsqueda en tiempo real
+// Búsqueda y recargar
 document.getElementById('search-input').addEventListener('input', filtrarYRenderizar);
-
-// Recargar
 document.getElementById('btn-refresh').addEventListener('click', cargarProductos);
 document.getElementById('btn-refresh-top').addEventListener('click', cargarProductos);
 
-// ── 2.2 POST /productos/ — Crear producto ─────────────────────────
+// ── POST /productos/ — Crear producto ─────────────────────────────
 document.getElementById('btn-nuevo-producto').addEventListener('click', () => {
   clearModalError('modal-producto-error');
+  ['input-barras','input-desc','input-precio','input-stock','input-categoria']
+    .forEach(id => document.getElementById(id).value = '');
   document.getElementById('modal-producto-title').textContent = 'Nuevo Producto';
-  document.getElementById('input-barras').value    = '';
-  document.getElementById('input-desc').value      = '';
-  document.getElementById('input-precio').value    = '';
-  document.getElementById('input-stock').value     = '';
-  document.getElementById('input-categoria').value = '';
   openModal('modal-producto');
 });
 
@@ -365,7 +265,6 @@ document.getElementById('btn-guardar-producto').addEventListener('click', async 
 
   const btn = document.getElementById('btn-guardar-producto');
   setLoading(btn, true);
-
   try {
     const res = await fetch(`${API}/productos/`, {
       method: 'POST',
@@ -373,28 +272,25 @@ document.getElementById('btn-guardar-producto').addEventListener('click', async 
       body: JSON.stringify({ codigo_barras, descripcion, precio, stock, id_categoria }),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      showModalError('modal-producto-error', data.detail || data.mensaje || `Error ${res.status}`);
-      return;
-    }
+    if (!res.ok) { showModalError('modal-producto-error', data.detail || data.mensaje || `Error ${res.status}`); return; }
     closeModal('modal-producto');
-    showToast(`Producto "${descripcion}" creado exitosamente.`, 'success');
+    showToast(`Producto "${descripcion}" creado exitosamente.`);
     cargarProductos();
   } catch (err) {
-    showModalError('modal-producto-error', 'Error de conexión con el servidor.');
+    showModalError('modal-producto-error', `Error de conexión: ${err.message}`);
   } finally {
     setLoading(btn, false);
   }
 });
 
-// ── 2.3 PUT /productos/{id}/precio — Actualizar precio ────────────
+// ── PUT /productos/{id}/precio — Actualizar precio ────────────────
 function abrirModalPrecio(id) {
-  const producto = state.productos.find(p => p.id_producto === id);
-  if (!producto) return;
-  state.editingProductoId = id;
+  const p = state.productos.find(x => x.id_producto === id);
+  if (!p) return;
+  state.editingId = id;
   clearModalError('modal-precio-error');
   document.getElementById('modal-precio-desc').textContent =
-    `${producto.descripcion} — precio actual: ${formatCOP(producto.precio)}`;
+    `${p.descripcion} — precio actual: ${formatCOP(p.precio)}`;
   document.getElementById('input-nuevo-precio').value = '';
   openModal('modal-precio');
 }
@@ -402,43 +298,35 @@ function abrirModalPrecio(id) {
 document.getElementById('btn-guardar-precio').addEventListener('click', async () => {
   clearModalError('modal-precio-error');
   const precio = parseFloat(document.getElementById('input-nuevo-precio').value);
-  if (isNaN(precio) || precio < 0) {
-    showModalError('modal-precio-error', 'Ingresa un precio válido.');
-    return;
-  }
+  if (isNaN(precio) || precio < 0) { showModalError('modal-precio-error', 'Ingresa un precio válido.'); return; }
 
   const btn = document.getElementById('btn-guardar-precio');
   setLoading(btn, true);
-
   try {
-    const res = await fetch(`${API}/productos/${state.editingProductoId}/precio`, {
-      method: 'PUT',
-      headers: authHeaders(),
+    const res = await fetch(`${API}/productos/${state.editingId}/precio`, {
+      method: 'PUT', headers: authHeaders(),
       body: JSON.stringify({ precio }),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      showModalError('modal-precio-error', data.detail || data.mensaje || `Error ${res.status}`);
-      return;
-    }
+    if (!res.ok) { showModalError('modal-precio-error', data.detail || data.mensaje || `Error ${res.status}`); return; }
     closeModal('modal-precio');
-    showToast('Precio actualizado correctamente.', 'success');
+    showToast('Precio actualizado correctamente.');
     cargarProductos();
   } catch (err) {
-    showModalError('modal-precio-error', 'Error de conexión con el servidor.');
+    showModalError('modal-precio-error', `Error de conexión: ${err.message}`);
   } finally {
     setLoading(btn, false);
   }
 });
 
-// ── 2.4 PUT /productos/{id}/ingreso — Ingresar mercancía ──────────
+// ── PUT /productos/{id}/ingreso — Ingresar mercancía ──────────────
 function abrirModalIngreso(id) {
-  const producto = state.productos.find(p => p.id_producto === id);
-  if (!producto) return;
-  state.editingProductoId = id;
+  const p = state.productos.find(x => x.id_producto === id);
+  if (!p) return;
+  state.editingId = id;
   clearModalError('modal-ingreso-error');
   document.getElementById('modal-ingreso-desc').textContent =
-    `${producto.descripcion} — stock actual: ${producto.stock ?? 0} unidades`;
+    `${p.descripcion} — stock actual: ${p.stock ?? 0} unidades`;
   document.getElementById('input-cantidad-ingreso').value = '';
   openModal('modal-ingreso');
 }
@@ -453,74 +341,49 @@ document.getElementById('btn-confirmar-ingreso').addEventListener('click', async
 
   const btn = document.getElementById('btn-confirmar-ingreso');
   setLoading(btn, true);
-
   try {
-    const res = await fetch(`${API}/productos/${state.editingProductoId}/ingreso`, {
-      method: 'PUT',
-      headers: authHeaders(),
+    const res = await fetch(`${API}/productos/${state.editingId}/ingreso`, {
+      method: 'PUT', headers: authHeaders(),
       body: JSON.stringify({ cantidad_ingreso }),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      showModalError('modal-ingreso-error', data.detail || data.mensaje || `Error ${res.status}`);
-      return;
-    }
+    if (!res.ok) { showModalError('modal-ingreso-error', data.detail || data.mensaje || `Error ${res.status}`); return; }
     closeModal('modal-ingreso');
-    showToast(`Ingreso de ${cantidad_ingreso} unidades registrado.`, 'success');
+    showToast(`Ingreso de ${cantidad_ingreso} unidades registrado.`);
     cargarProductos();
   } catch (err) {
-    showModalError('modal-ingreso-error', 'Error de conexión con el servidor.');
+    showModalError('modal-ingreso-error', `Error de conexión: ${err.message}`);
   } finally {
     setLoading(btn, false);
   }
 });
 
-// ── 2.5 DELETE /productos/{id} — Eliminar producto ────────────────
+// ── DELETE /productos/{id} — Eliminar producto ────────────────────
 function abrirConfirmDelete(id) {
-  const producto = state.productos.find(p => p.id_producto === id);
-  if (!producto) return;
-  state.editingProductoId = id;
+  const p = state.productos.find(x => x.id_producto === id);
+  if (!p) return;
+  state.editingId = id;
   document.getElementById('confirm-delete-msg').textContent =
-    `¿Estás seguro de que deseas eliminar "${producto.descripcion}"? Esta acción no se puede deshacer.`;
+    `¿Estás seguro de que deseas eliminar "${p.descripcion}"? Esta acción no se puede deshacer.`;
   openModal('modal-confirm-delete');
 }
 
 document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
   const btn = document.getElementById('btn-confirm-delete');
   setLoading(btn, true);
-
   try {
-    const res = await fetch(`${API}/productos/${state.editingProductoId}`, {
-      method: 'DELETE',
-      headers: authHeaders(),
+    const res = await fetch(`${API}/productos/${state.editingId}`, {
+      method: 'DELETE', headers: authHeaders(),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      closeModal('modal-confirm-delete');
-      showToast(data.detail || data.mensaje || `Error ${res.status} al eliminar.`, 'error');
-      return;
-    }
     closeModal('modal-confirm-delete');
-    showToast(data.mensaje || 'Producto eliminado exitosamente.', 'success');
+    if (!res.ok) { showToast(data.detail || data.mensaje || `Error ${res.status}`, 'error'); return; }
+    showToast(data.mensaje || 'Producto eliminado exitosamente.');
     cargarProductos();
   } catch (err) {
     closeModal('modal-confirm-delete');
-    showToast('Error de conexión con el servidor.', 'error');
+    showToast(`Error de conexión: ${err.message}`, 'error');
   } finally {
     setLoading(btn, false);
   }
-});
-
-// ─── Cerrar modales con Escape ────────────────────────────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
-  }
-});
-
-// ─── Cerrar modal al clic en backdrop ─────────────────────────────
-document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
-  backdrop.addEventListener('click', e => {
-    if (e.target === backdrop) backdrop.classList.remove('open');
-  });
 });
