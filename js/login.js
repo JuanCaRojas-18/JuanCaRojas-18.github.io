@@ -2,7 +2,7 @@
 // CONFIGURACIÓN DE RED (Fase 2)
 // Cambiar a la URL de Ngrok cuando hagan pruebas remotas
 // ==========================================
-const API_BASE_URL = 'http://localhost:8000'; // Cambiar a IP/Ngrok para pruebas remotas
+const API_BASE_URL = 'http://172.20.10.8:8000'; // Cambiar a IP/Ngrok para pruebas remotas
 
 /* ---- Tab switching ---- */
 function switchTab(tab) {
@@ -85,26 +85,31 @@ async function handleLogin(e) {
       if (response.ok) {
         const data = await response.json();
         
+        // Guardar sesión de empresa en sessionStorage para que dashboard.html la use
+        sessionStorage.setItem('bz_empresa_nit',    nitInput.value.trim());
+        sessionStorage.setItem('bz_empresa_token',  data.token || data.access_token || '');
+        sessionStorage.setItem('bz_empresa_nombre', data.nombre_empresa || `NIT ${nitInput.value.trim()}`);
+
         // Éxito visual
         btn.style.background = '#059669';
         btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Acceso concedido';
         
-        
         setTimeout(() => {
           window.location.href = 'Intranet_Cliente/dashboard.html'; 
-        }, 1000);
+        }, 900);
 
       } else {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || 'Credenciales incorrectas');
+        throw new Error(errorData.detail || errorData.mensaje || 'Credenciales incorrectas');
       }
 
     } catch (error) {
-      // 4. Captura de errores de red o credenciales inválidas
       console.error('Error de autenticación:', error);
-      alert(`Error al iniciar sesión: ${error.message}. Verifica que el servidor de FastAPI esté encendido y las credenciales sean correctas.`);
+      const isNetwork = error instanceof TypeError;
+      alert(isNetwork
+        ? `No se puede conectar con el servidor (${API_BASE_URL}). Verifica que FastAPI esté encendido y que ambos equipos estén en la misma red.`
+        : `Error: ${error.message}`);
       
-      // Restaurar estado del botón
       btn.disabled = false;
       btn.style.background = 'var(--accent)';
       btn.innerHTML = originalBtnText;
