@@ -162,16 +162,16 @@
 
         <form class="auth-form" id="login-form" onsubmit="handleLogin(event)" novalidate>
 
-          <!-- Email -->
+          <!-- NIT -->
           <div class="form-group" id="lg-email-grp">
-            <label class="form-label" for="lg-email">Correo electrónico</label>
+            <label class="form-label" for="lg-email">NIT de la empresa</label>
             <div class="form-field">
               <span class="field-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
               </span>
-              <input type="email" id="lg-email" class="form-input" placeholder="nombre@empresa.com" autocomplete="email" required />
+              <input type="text" id="lg-email" class="form-input" placeholder="Ej: 900123456" autocomplete="off" required />
             </div>
-            <span class="field-err">Ingresa un correo electrónico válido.</span>
+            <span class="field-err">Ingresa el NIT de tu empresa.</span>
           </div>
 
           <!-- Password -->
