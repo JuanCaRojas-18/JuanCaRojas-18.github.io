@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Billzen — Admin Dashboard</title>
+  <title>Billzen — Panel de Inventario</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -200,8 +200,7 @@
     .auth-back:hover { color: var(--text2); }
 
     /* ─── DASHBOARD LAYOUT ─── */
-    #dashboard { display: none; min-height: 100vh; }
-    #dashboard.visible { display: flex; }
+    #dashboard { display: flex; min-height: 100vh; }
 
     /* Sidebar */
     .sidebar {
@@ -480,7 +479,12 @@
     }
     .icon-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
     .icon-btn.danger:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
-    .icon-btn.warn:hover { border-color: var(--warn); color: var(--warn); background: var(--warn-bg); }
+    /* Botón actualizar precio — amarillo */
+    .icon-btn.icon-warn { color: var(--warn); border-color: rgba(245,158,11,0.3); }
+    .icon-btn.icon-warn:hover { border-color: var(--warn); background: var(--warn-bg); }
+    /* Botón ingresar stock — azul */
+    .icon-btn.icon-blue { color: var(--blue); border-color: rgba(59,130,246,0.3); }
+    .icon-btn.icon-blue:hover { border-color: var(--blue); background: var(--blue-bg); }
 
     /* Empty state */
     .empty-state {
@@ -623,98 +627,9 @@
 <body>
 
 <!-- ═══════════════════════════════════════════
-     PASO 1: LOGIN EMPRESA
+     DASHBOARD (acceso directo tras login de empresa)
 ═══════════════════════════════════════════ -->
-<div class="auth-overlay" id="screen-empresa">
-  <div class="auth-bg-grid"></div>
-  <div class="auth-bg-glow"></div>
-  <div class="auth-card">
-    <a href="#" class="auth-logo">
-      <div class="auth-logo-mark">
-        <svg viewBox="0 0 18 18" fill="none" width="18" height="18">
-          <rect x="2" y="2" width="6" height="6" rx="1.5" fill="white"/>
-          <rect x="10" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
-          <rect x="2" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
-          <rect x="10" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.3"/>
-        </svg>
-      </div>
-      <span class="auth-logo-name">Bill<em>zen</em></span>
-    </a>
-
-    <div class="auth-step-indicator">
-      <div class="auth-step-dot active" id="dot-1"></div>
-      <div class="auth-step-dot" id="dot-2"></div>
-    </div>
-
-    <div class="auth-title">Acceso Empresarial</div>
-    <div class="auth-subtitle">Paso 1 de 2 &mdash; Identificación de la empresa</div>
-
-    <div class="auth-error" id="empresa-error"></div>
-
-    <div class="form-group">
-      <label class="form-label">NIT de la empresa</label>
-      <input type="text" class="form-input" id="empresa-nit" placeholder="Ej: 900123456" autocomplete="off" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Contraseña</label>
-      <input type="password" class="form-input" id="empresa-pass" placeholder="Contraseña empresarial" />
-    </div>
-
-    <button class="btn-primary-full" id="btn-empresa-login">Continuar</button>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     PASO 2: LOGIN ADMIN
-═══════════════════════════════════════════ -->
-<div class="auth-overlay hidden" id="screen-admin">
-  <div class="auth-bg-grid"></div>
-  <div class="auth-bg-glow"></div>
-  <div class="auth-card">
-    <a href="#" class="auth-logo">
-      <div class="auth-logo-mark">
-        <svg viewBox="0 0 18 18" fill="none" width="18" height="18">
-          <rect x="2" y="2" width="6" height="6" rx="1.5" fill="white"/>
-          <rect x="10" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
-          <rect x="2" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.6"/>
-          <rect x="10" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.3"/>
-        </svg>
-      </div>
-      <span class="auth-logo-name">Bill<em>zen</em></span>
-    </a>
-
-    <div class="auth-step-indicator">
-      <div class="auth-step-dot done" id="dot-1b"></div>
-      <div class="auth-step-dot active" id="dot-2b"></div>
-    </div>
-
-    <button class="auth-back" id="btn-back-empresa">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Volver a empresa
-    </button>
-
-    <div class="auth-title">Acceso Administrador</div>
-    <div class="auth-subtitle">Paso 2 de 2 &mdash; Empresa: <strong id="admin-empresa-label">—</strong></div>
-
-    <div class="auth-error" id="admin-error"></div>
-
-    <div class="form-group">
-      <label class="form-label">Usuario administrador</label>
-      <input type="text" class="form-input" id="admin-user" placeholder="admin" autocomplete="off" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Contraseña</label>
-      <input type="password" class="form-input" id="admin-pass" placeholder="Contraseña de admin" />
-    </div>
-
-    <button class="btn-primary-full" id="btn-admin-login">Ingresar al sistema</button>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     DASHBOARD
-═══════════════════════════════════════════ -->
-<div id="dashboard">
+<div id="dashboard" style="display:flex;">
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
@@ -775,10 +690,10 @@
 
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="sidebar-avatar" id="sidebar-avatar">AD</div>
+        <div class="sidebar-avatar" id="sidebar-avatar">--</div>
         <div>
-          <div class="sidebar-user-name" id="sidebar-username">Admin</div>
-          <div class="sidebar-user-role">Administrador</div>
+          <div class="sidebar-user-name" id="sidebar-username">Empresa</div>
+          <div class="sidebar-user-role" id="sidebar-userrole">Sesión activa</div>
         </div>
       </div>
       <button class="btn-logout" id="btn-logout">
