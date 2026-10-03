@@ -82,7 +82,6 @@ async function handleLogin(e) {
         })
       });
 
-      // 3. Manejo de la respuesta
       if (response.ok) {
         const data = await response.json();
         
@@ -90,13 +89,12 @@ async function handleLogin(e) {
         btn.style.background = '#059669';
         btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Acceso concedido';
         
-        // Redirección al Dashboard (INTRANET) tras 1 segundo
+        
         setTimeout(() => {
           window.location.href = 'Intranet_Cliente/index.html'; 
         }, 1000);
 
       } else {
-        // Manejo de errores HTTP (ej: 401 Unauthorized, 404 Not Found)
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.detail || 'Credenciales incorrectas');
       }
