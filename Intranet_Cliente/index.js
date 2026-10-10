@@ -53,3 +53,21 @@ document.addEventListener('click', (e) => {
     document.querySelector('.nav-links').classList.remove('open');
   }
 });
+
+
+// ==========================================================
+// DESCARGAS — lógica simple para la nueva sección
+// ==========================================================
+(function initDownloads() {
+  const section = document.getElementById('descargar');
+  if (!section) return;
+
+  const baseUrl = 'https://github.com/JuanCaRojas-18/JuanCaRojas-18.github.io/releases/latest/download/';
+  
+  // Asignar URLs reales
+  const btnWindows = document.getElementById('dl-btn-windows');
+  const btnMac = document.getElementById('dl-btn-mac');
+  
+  if(btnWindows) btnWindows.href = baseUrl + 'Billzen-Setup-x64.exe';
+  if(btnMac) btnMac.href = baseUrl + 'Billzen-arm64.dmg';
+})();
