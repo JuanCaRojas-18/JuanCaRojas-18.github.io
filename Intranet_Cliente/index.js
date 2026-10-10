@@ -66,8 +66,8 @@ document.addEventListener('click', (e) => {
   
   // Asignar URLs reales
   const btnWindows = document.getElementById('dl-btn-windows');
-  const btnMac = document.getElementById('dl-btn-mac');
+  const btnAndroid = document.getElementById('dl-btn-android');
   
   if(btnWindows) btnWindows.href = baseUrl + 'billzenERP.exe';
-  if(btnMac) btnMac.href = baseUrl + 'Billzen-arm64.dmg';
+  if(btnAndroid) btnAndroid.href = baseUrl + 'billzenERP.apk';
 })();
