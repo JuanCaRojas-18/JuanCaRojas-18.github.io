@@ -1004,3 +1004,62 @@ footer {
   /* Pricing */
   .plan-featured-badge { font-size: 10px; }
 }
+
+
+/* ============ DOWNLOAD ============ */
+.download-section {
+  background: linear-gradient(180deg, var(--surface), var(--bg));
+  padding-bottom: 120px;
+}
+.download-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 860px;
+  margin: 40px auto 0;
+}
+.download-card {
+  background: var(--dark);
+  color: #ffffff;
+  padding: 48px 36px;
+  border-radius: 20px;
+  text-align: center;
+  border: 2px solid var(--accent);
+  transition: transform .35s, box-shadow .35s;
+}
+.download-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(10, 111, 82, 0.25);
+}
+.download-card .os-icon {
+  margin-bottom: 16px;
+  color: var(--accent);
+}
+.download-card h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+.download-card p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+.download-card .btn {
+  width: 100%;
+  justify-content: center;
+  padding: 14px;
+  font-size: 16px;
+}
+.req {
+  margin-top: 40px;
+  color: var(--text3);
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .download-grid {
+    grid-template-columns: 1fr;
+  }
+}
