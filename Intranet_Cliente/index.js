@@ -73,9 +73,9 @@ document.addEventListener('click', (e) => {
     const token = sessionStorage.getItem('bz_empresa_token') || sessionStorage.getItem('bz_empresa_nit');
     
     if (!token) {
-      // Si no hay sesión, evitar descarga y llevar al registro
+      // Si no hay sesión, evitar descarga y llevar al login
       e.preventDefault();
-      window.location.href = '../login.html#register';
+      window.location.href = '../login.html';
     } else {
       // Si ya está registrado/logueado, iniciar la descarga real
       e.preventDefault();
