@@ -68,6 +68,12 @@ document.addEventListener('click', (e) => {
   const btnWindows = document.getElementById('dl-btn-windows');
   const btnAndroid = document.getElementById('dl-btn-android');
   
-  if(btnWindows) btnWindows.href = baseUrl + 'billzenERP.exe';
-  if(btnAndroid) btnAndroid.href = baseUrl + 'billzenERP.apk';
+  if(btnWindows) {
+    btnWindows.removeAttribute('download');
+    btnWindows.href = '../login.html#register';
+  }
+  if(btnAndroid) {
+    btnAndroid.removeAttribute('download');
+    btnAndroid.href = '../login.html#register';
+  }
 })();

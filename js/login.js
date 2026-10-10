@@ -143,3 +143,6 @@ function handleRegister(e) {
   e.preventDefault();
   alert("El endpoint de registro aún no está definido en la Guía de Integración.");
 }
+// Auto-switch to register tab if URL hash is #register
+if(window.location.hash === '#register') { setTimeout(() => switchTab('register'), 100); }
+
