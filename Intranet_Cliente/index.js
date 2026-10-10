@@ -68,6 +68,6 @@ document.addEventListener('click', (e) => {
   const btnWindows = document.getElementById('dl-btn-windows');
   const btnMac = document.getElementById('dl-btn-mac');
   
-  if(btnWindows) btnWindows.href = baseUrl + 'Billzen-Setup-x64.exe';
+  if(btnWindows) btnWindows.href = baseUrl + 'billzenERP.exe';
   if(btnMac) btnMac.href = baseUrl + 'Billzen-arm64.dmg';
 })();
