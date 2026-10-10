@@ -68,12 +68,25 @@ document.addEventListener('click', (e) => {
   const btnWindows = document.getElementById('dl-btn-windows');
   const btnAndroid = document.getElementById('dl-btn-android');
   
+  function handleDownloadClick(e, file) {
+    // Verificar si el usuario ha iniciado sesión o se ha registrado
+    const token = sessionStorage.getItem('bz_empresa_token') || sessionStorage.getItem('bz_empresa_nit');
+    
+    if (!token) {
+      // Si no hay sesión, evitar descarga y llevar al registro
+      e.preventDefault();
+      window.location.href = '../login.html#register';
+    } else {
+      // Si ya está registrado/logueado, iniciar la descarga real
+      e.preventDefault();
+      window.location.href = baseUrl + file;
+    }
+  }
+
   if(btnWindows) {
-    btnWindows.removeAttribute('download');
-    btnWindows.href = '../login.html#register';
+    btnWindows.addEventListener('click', (e) => handleDownloadClick(e, 'billzenERP.exe'));
   }
   if(btnAndroid) {
-    btnAndroid.removeAttribute('download');
-    btnAndroid.href = '../login.html#register';
+    btnAndroid.addEventListener('click', (e) => handleDownloadClick(e, 'billzenERP.apk'));
   }
 })();
